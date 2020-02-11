@@ -1,0 +1,501 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5611F4EF23D8E0D70069701D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5611F4EE23D8E0D70069701D /* AppDelegate.swift */; };
+		5611F4F123D8E0D70069701D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5611F4F023D8E0D70069701D /* SceneDelegate.swift */; };
+		5611F4F623D8E0D70069701D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5611F4F423D8E0D70069701D /* Main.storyboard */; };
+		5611F4F823D8E0D90069701D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5611F4F723D8E0D90069701D /* Assets.xcassets */; };
+		5611F4FB23D8E0D90069701D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5611F4F923D8E0D90069701D /* LaunchScreen.storyboard */; };
+		5623959923DBDD2E00615B2F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623959823DBDD2E00615B2F /* LoginViewController.swift */; };
+		5623959B23DBEFC100615B2F /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5623959A23DBEFC100615B2F /* RealmManager.swift */; };
+		5648BE4623E3D1BD000FCB5C /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5648BE4523E3D1BD000FCB5C /* SignupViewController.swift */; };
+		5668C25923E8AD9500D4E94E /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5668C25823E8AD9500D4E94E /* ForgotPasswordViewController.swift */; };
+		567E66F123EDEAAB007EED9A /* ApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567E66F023EDEAAB007EED9A /* ApplicationViewController.swift */; };
+		567F891623DB5D0D0022B233 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F891523DB5D0D0022B233 /* Constants.swift */; };
+		567F891923DB63C90022B233 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F891823DB63C90022B233 /* UserDefaultsManager.swift */; };
+		567F891B23DB65E40022B233 /* RESTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F891A23DB65E40022B233 /* RESTManager.swift */; };
+		567F891D23DB7C170022B233 /* Controls+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 567F891C23DB7C170022B233 /* Controls+Extensions.swift */; };
+		568695B823E4AFE9003C17E5 /* SignupVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568695B723E4AFE9003C17E5 /* SignupVerifyViewController.swift */; };
+		569F7A7623E629BC0098B152 /* SignedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569F7A7523E629BC0098B152 /* SignedInViewController.swift */; };
+		56A8B85623DF86B50062AC5D /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A8B85523DF86B50062AC5D /* LoggedInViewController.swift */; };
+		56BF1DC823F337F700562BEB /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BF1DC723F337F700562BEB /* ChangePasswordViewController.swift */; };
+		56CCA49923E9EA2800C81E61 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CCA49823E9EA2800C81E61 /* ResetPasswordViewController.swift */; };
+		56CCA49B23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CCA49A23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift */; };
+		56DAB50B23F1EB8900F1D15D /* RegisterInviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAB50A23F1EB8900F1D15D /* RegisterInviteViewController.swift */; };
+		56DAB50D23F1EB9E00F1D15D /* RegisteredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAB50C23F1EB9E00F1D15D /* RegisteredViewController.swift */; };
+		56DE5C2123EF02E100C3B9F1 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE5C2023EF02E100C3B9F1 /* InviteViewController.swift */; };
+		56E0FCF223DA295B002AD899 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E0FCF123DA295B002AD899 /* MainTabBarController.swift */; };
+		A549B6C605D2E1E990554A39 /* Pods_CosyncJWTSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A9ABD1F07EF1C3E46AE83F /* Pods_CosyncJWTSwift.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5611F4EB23D8E0D70069701D /* CosyncJWTSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CosyncJWTSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5611F4EE23D8E0D70069701D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5611F4F023D8E0D70069701D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		5611F4F523D8E0D70069701D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5611F4F723D8E0D90069701D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5611F4FA23D8E0D90069701D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5611F4FC23D8E0D90069701D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5623959823DBDD2E00615B2F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5623959A23DBEFC100615B2F /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		5648BE4523E3D1BD000FCB5C /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		5668C25823E8AD9500D4E94E /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		567E66F023EDEAAB007EED9A /* ApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationViewController.swift; sourceTree = "<group>"; };
+		567F891523DB5D0D0022B233 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		567F891823DB63C90022B233 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		567F891A23DB65E40022B233 /* RESTManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTManager.swift; sourceTree = "<group>"; };
+		567F891C23DB7C170022B233 /* Controls+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Controls+Extensions.swift"; sourceTree = "<group>"; };
+		568695B723E4AFE9003C17E5 /* SignupVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVerifyViewController.swift; sourceTree = "<group>"; };
+		569F7A7523E629BC0098B152 /* SignedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedInViewController.swift; sourceTree = "<group>"; };
+		56A8B85523DF86B50062AC5D /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
+		56BF1DC723F337F700562BEB /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		56CCA49823E9EA2800C81E61 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		56CCA49A23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordSuccessViewController.swift; sourceTree = "<group>"; };
+		56DAB50A23F1EB8900F1D15D /* RegisterInviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInviteViewController.swift; sourceTree = "<group>"; };
+		56DAB50C23F1EB9E00F1D15D /* RegisteredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredViewController.swift; sourceTree = "<group>"; };
+		56DE5C2023EF02E100C3B9F1 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		56E0FCF123DA295B002AD899 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		B8A9ABD1F07EF1C3E46AE83F /* Pods_CosyncJWTSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CosyncJWTSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFA9816F5E610EDC85666536 /* Pods-CosyncJWTSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CosyncJWTSwift.release.xcconfig"; path = "Target Support Files/Pods-CosyncJWTSwift/Pods-CosyncJWTSwift.release.xcconfig"; sourceTree = "<group>"; };
+		F491F2CA79E93278E2B23196 /* Pods-CosyncJWTSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CosyncJWTSwift.debug.xcconfig"; path = "Target Support Files/Pods-CosyncJWTSwift/Pods-CosyncJWTSwift.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5611F4E823D8E0D70069701D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A549B6C605D2E1E990554A39 /* Pods_CosyncJWTSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		43EAC4A9EF489693E41D89FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B8A9ABD1F07EF1C3E46AE83F /* Pods_CosyncJWTSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4DD9E77B4ABC6680C44ACF9D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F491F2CA79E93278E2B23196 /* Pods-CosyncJWTSwift.debug.xcconfig */,
+				CFA9816F5E610EDC85666536 /* Pods-CosyncJWTSwift.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		5611F4E223D8E0D70069701D = {
+			isa = PBXGroup;
+			children = (
+				5611F4ED23D8E0D70069701D /* CosyncJWTSwift */,
+				5611F4EC23D8E0D70069701D /* Products */,
+				4DD9E77B4ABC6680C44ACF9D /* Pods */,
+				43EAC4A9EF489693E41D89FB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		5611F4EC23D8E0D70069701D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5611F4EB23D8E0D70069701D /* CosyncJWTSwift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5611F4ED23D8E0D70069701D /* CosyncJWTSwift */ = {
+			isa = PBXGroup;
+			children = (
+				567F891723DB63B30022B233 /* Managers */,
+				567F891423DB5B320022B233 /* ViewControllers */,
+				5611F4EE23D8E0D70069701D /* AppDelegate.swift */,
+				5611F4F023D8E0D70069701D /* SceneDelegate.swift */,
+				5611F4F423D8E0D70069701D /* Main.storyboard */,
+				5611F4F723D8E0D90069701D /* Assets.xcassets */,
+				5611F4F923D8E0D90069701D /* LaunchScreen.storyboard */,
+				5611F4FC23D8E0D90069701D /* Info.plist */,
+				567F891523DB5D0D0022B233 /* Constants.swift */,
+			);
+			path = CosyncJWTSwift;
+			sourceTree = "<group>";
+		};
+		567F891423DB5B320022B233 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				56E0FCF123DA295B002AD899 /* MainTabBarController.swift */,
+				567F891C23DB7C170022B233 /* Controls+Extensions.swift */,
+				5623959823DBDD2E00615B2F /* LoginViewController.swift */,
+				56A8B85523DF86B50062AC5D /* LoggedInViewController.swift */,
+				5648BE4523E3D1BD000FCB5C /* SignupViewController.swift */,
+				568695B723E4AFE9003C17E5 /* SignupVerifyViewController.swift */,
+				569F7A7523E629BC0098B152 /* SignedInViewController.swift */,
+				5668C25823E8AD9500D4E94E /* ForgotPasswordViewController.swift */,
+				56CCA49823E9EA2800C81E61 /* ResetPasswordViewController.swift */,
+				56CCA49A23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift */,
+				567E66F023EDEAAB007EED9A /* ApplicationViewController.swift */,
+				56DE5C2023EF02E100C3B9F1 /* InviteViewController.swift */,
+				56DAB50A23F1EB8900F1D15D /* RegisterInviteViewController.swift */,
+				56DAB50C23F1EB9E00F1D15D /* RegisteredViewController.swift */,
+				56BF1DC723F337F700562BEB /* ChangePasswordViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		567F891723DB63B30022B233 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				567F891823DB63C90022B233 /* UserDefaultsManager.swift */,
+				567F891A23DB65E40022B233 /* RESTManager.swift */,
+				5623959A23DBEFC100615B2F /* RealmManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5611F4EA23D8E0D70069701D /* CosyncJWTSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5611F4FF23D8E0D90069701D /* Build configuration list for PBXNativeTarget "CosyncJWTSwift" */;
+			buildPhases = (
+				E31FB45E23D079A4A696AE43 /* [CP] Check Pods Manifest.lock */,
+				5611F4E723D8E0D70069701D /* Sources */,
+				5611F4E823D8E0D70069701D /* Frameworks */,
+				5611F4E923D8E0D70069701D /* Resources */,
+				73B889391A23A067E499E763 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CosyncJWTSwift;
+			productName = CosyncJWTSwift;
+			productReference = 5611F4EB23D8E0D70069701D /* CosyncJWTSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5611F4E323D8E0D70069701D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = cosync;
+				TargetAttributes = {
+					5611F4EA23D8E0D70069701D = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 5611F4E623D8E0D70069701D /* Build configuration list for PBXProject "CosyncJWTSwift" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5611F4E223D8E0D70069701D;
+			productRefGroup = 5611F4EC23D8E0D70069701D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5611F4EA23D8E0D70069701D /* CosyncJWTSwift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5611F4E923D8E0D70069701D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5611F4FB23D8E0D90069701D /* LaunchScreen.storyboard in Resources */,
+				5611F4F823D8E0D90069701D /* Assets.xcassets in Resources */,
+				5611F4F623D8E0D70069701D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		73B889391A23A067E499E763 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CosyncJWTSwift/Pods-CosyncJWTSwift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CosyncJWTSwift/Pods-CosyncJWTSwift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CosyncJWTSwift/Pods-CosyncJWTSwift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E31FB45E23D079A4A696AE43 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CosyncJWTSwift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5611F4E723D8E0D70069701D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5611F4EF23D8E0D70069701D /* AppDelegate.swift in Sources */,
+				56CCA49B23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift in Sources */,
+				56A8B85623DF86B50062AC5D /* LoggedInViewController.swift in Sources */,
+				56DAB50B23F1EB8900F1D15D /* RegisterInviteViewController.swift in Sources */,
+				567E66F123EDEAAB007EED9A /* ApplicationViewController.swift in Sources */,
+				5648BE4623E3D1BD000FCB5C /* SignupViewController.swift in Sources */,
+				56BF1DC823F337F700562BEB /* ChangePasswordViewController.swift in Sources */,
+				567F891923DB63C90022B233 /* UserDefaultsManager.swift in Sources */,
+				56E0FCF223DA295B002AD899 /* MainTabBarController.swift in Sources */,
+				567F891B23DB65E40022B233 /* RESTManager.swift in Sources */,
+				568695B823E4AFE9003C17E5 /* SignupVerifyViewController.swift in Sources */,
+				56DAB50D23F1EB9E00F1D15D /* RegisteredViewController.swift in Sources */,
+				56DE5C2123EF02E100C3B9F1 /* InviteViewController.swift in Sources */,
+				5623959923DBDD2E00615B2F /* LoginViewController.swift in Sources */,
+				5668C25923E8AD9500D4E94E /* ForgotPasswordViewController.swift in Sources */,
+				5623959B23DBEFC100615B2F /* RealmManager.swift in Sources */,
+				569F7A7623E629BC0098B152 /* SignedInViewController.swift in Sources */,
+				5611F4F123D8E0D70069701D /* SceneDelegate.swift in Sources */,
+				56CCA49923E9EA2800C81E61 /* ResetPasswordViewController.swift in Sources */,
+				567F891623DB5D0D0022B233 /* Constants.swift in Sources */,
+				567F891D23DB7C170022B233 /* Controls+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5611F4F423D8E0D70069701D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5611F4F523D8E0D70069701D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5611F4F923D8E0D90069701D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5611F4FA23D8E0D90069701D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5611F4FD23D8E0D90069701D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5611F4FE23D8E0D90069701D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5611F50023D8E0D90069701D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F491F2CA79E93278E2B23196 /* Pods-CosyncJWTSwift.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WQQLK89MX8;
+				INFOPLIST_FILE = CosyncJWTSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cosync.io.CosyncJWTSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5611F50123D8E0D90069701D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFA9816F5E610EDC85666536 /* Pods-CosyncJWTSwift.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WQQLK89MX8;
+				INFOPLIST_FILE = CosyncJWTSwift/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = cosync.io.CosyncJWTSwift;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5611F4E623D8E0D70069701D /* Build configuration list for PBXProject "CosyncJWTSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5611F4FD23D8E0D90069701D /* Debug */,
+				5611F4FE23D8E0D90069701D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5611F4FF23D8E0D90069701D /* Build configuration list for PBXNativeTarget "CosyncJWTSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5611F50023D8E0D90069701D /* Debug */,
+				5611F50123D8E0D90069701D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5611F4E323D8E0D70069701D /* Project object */;
+}

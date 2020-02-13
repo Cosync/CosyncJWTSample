@@ -56,6 +56,18 @@ class LoggedInViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    func showInviteNotSupported(){
+        
+        let alert = UIAlertController(title: "Invite Not Support", message: "Your applications does not support invitations.", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+
     func showInviteFailedAlert(){
         
         let alert = UIAlertController(title: "Invite Failed", message: "You have entered an invalid invite handle.", preferredStyle: .alert)
@@ -103,7 +115,7 @@ class LoggedInViewController: UIViewController {
                             if let error = err {
                     
                                 NSLog(error.localizedDescription)
-                                self.showInviteFailedAlert()
+                                self.showInviteNotSupported()
                             } else {
                                 
                                 self.performSegue(withIdentifier: "inviteSegue", sender: self)

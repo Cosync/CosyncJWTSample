@@ -26,19 +26,11 @@
 import Foundation
 
 struct Constants {
-    // **** Realm Cloud Users:
-    // **** Replace MY_INSTANCE_ADDRESS with the hostname of your cloud instance
-    // **** e.g., "mycoolapp.us1.cloud.realm.io"
-    // ****
-    // ****
-    // **** ROS On-Premises Users
-    // **** Replace the AUTH_URL and REALM_URL strings with the fully qualified versions of
-    // **** address of your ROS server, e.g.: "http://127.0.0.1:9080" and "realm://127.0.0.1:9080"
     
-    static let MY_INSTANCE_ADDRESS = "cosyncjwt2.us1a.cloud.realm.io" // <- update this
-    static let APP_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6IjU2MjY1MzJlN2M1MzQ2ZGU4YjM3YjgzZDNkM2U3ZWJmIiwic2NvcGUiOiJhcHAiLCJpYXQiOjE1ODE2OTM5NDF9.C4H4UJWN70EXfYMDM7CF5mpz740GKJIlKnL3h1loyHmNlmX1MQCITk6ESk7Rtba52_TJtxMaOJiAKzwFMYvVc3NQj3MWLTRcYI77qxMEV8R7tghbrA-wc3kbIl7Ww--9YyAwbKiGjWU-E0VwxA7wMhCefJwEmqKozIY864R-txTC_8FWFd4dlY1minFeMUB_W63hI16jWC29-YA7TE24ZwpjNWz90A1uAjUAyQpGJzWW7I0UB9DpU8hZNXt8jKC55lI0p2KQ5c9-6qRdpCeJr-EYykA1c3KKETApGwCnxrDXxx7E5dc3q1BFAYJhqacfKkhmBuoxJlMFn7BYeon7jQ" // <- update this
+    static let MY_INSTANCE_ADDRESS = "testapplication1.us2a.cloud.realm.io" // <- update this
+    static let APP_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImY0NzE1NTMxMzljMTRjNmViYjA3YjM0YzI2MDM3MjBjIiwic2NvcGUiOiJhcHAiLCJpYXQiOjE1ODc0MTg1MDJ9.T9RrU6F_NcuaxMGU0JPtraUPoIHoVBcQdTiFe7yH9uRKFJKVeJ6mea6Ou1S5yNShj_TdyvkZjIa1bjup-FnPwqkaADWHD8YBP3diQwvqqF5ZSNv5R088ykHNqcdxkZ42cZv1Q7En8g2WUUczt0rt0kMUkg9UPUkjfOtE9UUGEGrKbBuULk4Bg4cwX9QI_uGbZSQo1rDoKgZ_B01PEFdn4GK1fdLpbBcP2Q-q83RSDYlv3yE9eGKThZRRNp6-RFyl9KCxZvT2FEhAR432zoQ9XPgloG70VmQVKz6Qm8xPMsNw3-F4lmT8BxC2nIyOh8BT608O_ToiXmGsO3m67Xf40w" // <- update this
 
-    static let SUPERUSER_ACCESS_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhOTVlNTI3N2U1MTY0NjY2YTU0MGFiMzE5NGQxNzY3YiIsImFwcElkIjoiNTYyNjUzMmU3YzUzNDZkZThiMzdiODNkM2QzZTdlYmYiLCJzY29wZSI6ImRldmVsb3BlciIsImlhdCI6MTU4MjA0Mzg1Nn0.TW2W6AaKWokVS5tsm9OaqWBn2hCKD2XdQKUYcFt8LXdb34GSneQkqvTBHSWz6eF7UI-WfjjNMywkfaIW8YuOGgbfnr-BPin2UzDAORQuyeXtB5Mi8ozX33dSx9qqNPpkT7LCvGzg3zQEvdPiCIKnkTxkL1kSAuw-OfdYYqQ0YvFa5nqMORXd58Ji1XT89NQMe0X0Kfwt8DXpg_gTceLI3GHULib8j847ixK22haGrx6mevFuq3FoTBZT6KW4VxNzPp6UOYvY39FWzwczlwDY-5uS3IMNqnvrjGgFk1oD4Ks6V6WQw4ZJQeSkFrjjN-SbUaTlp_zxt3M_vIxeEqWF7w" // <- update this
+    static let SUPERUSER_ACCESS_TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI0ZTY5MmNmNjMzMjE0NjYzOTIwMmVkYmM3NGZhOTAzMSIsImFwcElkIjoiZjQ3MTU1MzEzOWMxNGM2ZWJiMDdiMzRjMjYwMzcyMGMiLCJzY29wZSI6ImRldmVsb3BlciIsImlhdCI6MTU4NzQxODYyM30.2KEGkASUwmATQ57M5oVfAKD8AV4hrB6453Bn4jHZ5K4OUOkdeE3s3Pu1Fo964Iaj2_RQzjNdh1zpHQD2V_BOakfiIAIifYObscGX5IpIDzzhlM67t1wCPXY8xlPLT_d608CudZNEHPdNs6W713ne57h0PgqBRSvAHBDFAcoLEyD60SUYK1vMGgASPnG4_x43Ru1hO93uZPNppxJQpo1SffQwPQmB4Va2EHu1Ublau_OY7vsbT-AecfWMyIvx1VdPZ6Hva6v-Nn4SGTpj0BM0zUqjYxEqhb6d3hTvLxhCLN4-qUhE7BC3-mD3eFWrQG9nhxigcmY7mgLdQqJj_lrXsw" // <- update this
     
     static let COSYNC_REST_ADDRESS = "https://rest.cosync.net"
     static let AUTH_URL  = URL(string: "https://\(MY_INSTANCE_ADDRESS)")!

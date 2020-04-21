@@ -29,6 +29,7 @@
 		56CCA49B23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CCA49A23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift */; };
 		56DAB50B23F1EB8900F1D15D /* RegisterInviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAB50A23F1EB8900F1D15D /* RegisterInviteViewController.swift */; };
 		56DAB50D23F1EB9E00F1D15D /* RegisteredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DAB50C23F1EB9E00F1D15D /* RegisteredViewController.swift */; };
+		56DB0EC3244F94FF0049AF88 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 56DB0EC2244F94FE0049AF88 /* README.md */; };
 		56DE5C2123EF02E100C3B9F1 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE5C2023EF02E100C3B9F1 /* InviteViewController.swift */; };
 		56E0FCF223DA295B002AD899 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E0FCF123DA295B002AD899 /* MainTabBarController.swift */; };
 		A549B6C605D2E1E990554A39 /* Pods_CosyncJWTSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A9ABD1F07EF1C3E46AE83F /* Pods_CosyncJWTSwift.framework */; };
@@ -59,6 +60,7 @@
 		56CCA49A23E9EA5400C81E61 /* ResetPasswordSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordSuccessViewController.swift; sourceTree = "<group>"; };
 		56DAB50A23F1EB8900F1D15D /* RegisterInviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInviteViewController.swift; sourceTree = "<group>"; };
 		56DAB50C23F1EB9E00F1D15D /* RegisteredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredViewController.swift; sourceTree = "<group>"; };
+		56DB0EC2244F94FE0049AF88 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		56DE5C2023EF02E100C3B9F1 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		56E0FCF123DA295B002AD899 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		B8A9ABD1F07EF1C3E46AE83F /* Pods_CosyncJWTSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CosyncJWTSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 		5611F4ED23D8E0D70069701D /* CosyncJWTSwift */ = {
 			isa = PBXGroup;
 			children = (
+				56DB0EC2244F94FE0049AF88 /* README.md */,
 				567F891723DB63B30022B233 /* Managers */,
 				567F891423DB5B320022B233 /* ViewControllers */,
 				5611F4EE23D8E0D70069701D /* AppDelegate.swift */,
@@ -223,6 +226,7 @@
 			files = (
 				5611F4FB23D8E0D90069701D /* LaunchScreen.storyboard in Resources */,
 				5611F4F823D8E0D90069701D /* Assets.xcassets in Resources */,
+				56DB0EC3244F94FF0049AF88 /* README.md in Resources */,
 				5611F4F623D8E0D70069701D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

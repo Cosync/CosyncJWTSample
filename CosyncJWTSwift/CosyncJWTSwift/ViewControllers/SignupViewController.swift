@@ -80,7 +80,7 @@ class SignupViewController: UIViewController {
                     let spinner = UIActivityIndicatorView(style: .medium)
                     spinner.startAnimating()
                     
-                    CSRESTManager.shared.signup(handleText, signupData: signupData, onCompletion: { (err) in
+                    CSRESTManager.shared.signup(handleText, password: passwordText, signupData: signupData, onCompletion: { (err) in
                         
                         DispatchQueue.main.async {
                             
@@ -141,7 +141,6 @@ class SignupViewController: UIViewController {
         {
             if let signupVerifyViewController = segue.destination as? SignupVerifyViewController {
                 signupVerifyViewController.handle = self.handle?.text
-                signupVerifyViewController.password = self.password?.text
             }
         }
     }

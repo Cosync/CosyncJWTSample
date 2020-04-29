@@ -132,7 +132,7 @@ class CSRESTManager {
     }
     
     // Singup into CosyncJWT
-    func signup(_ handle: String, signupData: String?, onCompletion completion: @escaping (Error?) -> Void) {
+    func signup(_ handle: String, password: String, signupData: String?, onCompletion completion: @escaping (Error?) -> Void) {
         
         let restPath = Constants.COSYNC_REST_ADDRESS
         let appToken = Constants.APP_TOKEN
@@ -150,10 +150,12 @@ class CSRESTManager {
         var requestBodyComponents = URLComponents()
         if let signupData = signupData {
             requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                URLQueryItem(name: "password", value: password.md5()),
                                                 URLQueryItem(name: "signupData", value: signupData)]
 
         } else {
-            requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle)]
+            requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                URLQueryItem(name: "password", value: password.md5())]
         }
         
         urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
@@ -188,7 +190,7 @@ class CSRESTManager {
     }
     
     // Complete Singup into CosyncJWT
-    func completeSignup(_ handle: String, password: String, code: String, onCompletion completion: @escaping (Error?) -> Void) {
+    func completeSignup(_ handle: String, code: String, onCompletion completion: @escaping (Error?) -> Void) {
         
         let restPath = Constants.COSYNC_REST_ADDRESS
         let appToken = Constants.APP_TOKEN
@@ -206,7 +208,6 @@ class CSRESTManager {
         var requestBodyComponents = URLComponents()
         
         requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
-                                            URLQueryItem(name: "password", value: password.md5()),
                                             URLQueryItem(name: "code", value: code)]
 
         urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)

@@ -28,7 +28,6 @@ import UIKit
 class SignupVerifyViewController: UIViewController {
 
     var handle : String?
-    var password : String?
     
     @IBOutlet weak var code: UITextField!
     
@@ -53,7 +52,6 @@ class SignupVerifyViewController: UIViewController {
     @IBAction func verifyCode(_ sender: Any) {
         
         if let handle = self.handle,
-            let password = self.password,
             let code = self.code.text,
             code.count > 0 {
             
@@ -61,7 +59,7 @@ class SignupVerifyViewController: UIViewController {
             let spinner = UIActivityIndicatorView(style: .medium)
             spinner.startAnimating()
             
-            CSRESTManager.shared.completeSignup(handle, password: password, code: code, onCompletion: { (err) in
+            CSRESTManager.shared.completeSignup(handle, code: code, onCompletion: { (err) in
                 
                 DispatchQueue.main.async {
                     

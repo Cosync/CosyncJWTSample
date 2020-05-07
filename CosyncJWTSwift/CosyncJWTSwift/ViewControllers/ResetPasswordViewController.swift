@@ -39,9 +39,16 @@ class ResetPasswordViewController: UIViewController {
     }
     
     //Pop-up login failed alert when users input incorrect email or password
-    func resetPasswordFailedAlert(){
+    func resetPasswordFailedAlert(_ error: Error?){
         
-        let alert = UIAlertController(title: "Reset Password Failed", message: "You have entered an invalid code or paasword.", preferredStyle: .alert)
+        var message = "You have entered an invalid code or paasword."
+        
+        if let errorRest = error as? CSRESTManager.CSRESTError,
+               errorRest == .invalidPassword {
+            message = "your new password is not secure"
+        }
+        
+        let alert = UIAlertController(title: "Reset Password Failed", message: message, preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         
@@ -72,7 +79,7 @@ class ResetPasswordViewController: UIViewController {
                     if let error = err {
 
                         NSLog(error.localizedDescription)
-                        self.resetPasswordFailedAlert()
+                        self.resetPasswordFailedAlert(error)
                     } else {
                         
                         self.performSegue(withIdentifier: "resetPasswordSuccessSegue", sender: self)
@@ -87,7 +94,7 @@ class ResetPasswordViewController: UIViewController {
             self.view.addSubview(spinner)
 
         } else {
-            self.resetPasswordFailedAlert()
+            self.resetPasswordFailedAlert(nil)
         }
     }
 

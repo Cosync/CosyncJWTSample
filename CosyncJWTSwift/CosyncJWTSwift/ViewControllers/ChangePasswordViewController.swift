@@ -36,9 +36,16 @@ class ChangePasswordViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func showChangePasswordFailedAlert(){
+    func showChangePasswordFailedAlert(_ error: Error?){
         
-        let alert = UIAlertController(title: "Change Password Failed", message: "You have entered an invalid password.", preferredStyle: .alert)
+        var message = "You have entered an invalid password."
+        
+        if let errorRest = error as? CSRESTManager.CSRESTError,
+               errorRest == .invalidPassword {
+            message = "your new password is not secure"
+        }
+        
+        let alert = UIAlertController(title: "Change Password Failed", message: message, preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         
@@ -53,7 +60,7 @@ class ChangePasswordViewController: UIViewController {
             let passwordText = self.password?.text {
             
             if newPasswordText.count == 0 || passwordText.count == 0 {
-                self.showChangePasswordFailedAlert()
+                self.showChangePasswordFailedAlert(nil)
             } else {
                 
                 // activate spinner here
@@ -69,7 +76,7 @@ class ChangePasswordViewController: UIViewController {
                         
                         if err != nil {
                 
-                            self.showChangePasswordFailedAlert()
+                            self.showChangePasswordFailedAlert(err)
                         } else {
                             
                             self.navigationController?.popViewController(animated: true)

@@ -44,6 +44,14 @@ class CSRESTManager {
     
     // application data
     var appName: String?
+    var twoFactorVerification: String?
+    var passwordFilter: Bool?
+    var passwordMinLength: Int?
+    var passwordMinUpper: Int?
+    var passwordMinLower: Int?
+    var passwordMinDigit: Int?
+    var passwordMinSpecial: Int?
+    
     var appData: [String:Any]?
     
     enum CSRESTError: Error {
@@ -56,6 +64,7 @@ class CSRESTManager {
         case userAlreadyRegistered
         case invalidData
         case emailDoesNotExist
+        case invalidPassword
     }
     
     static let loginPath = "api/appuser/login"
@@ -133,60 +142,147 @@ class CSRESTManager {
     
     // Singup into CosyncJWT
     func signup(_ handle: String, password: String, signupData: String?, onCompletion completion: @escaping (Error?) -> Void) {
-        
-        let restPath = Constants.COSYNC_REST_ADDRESS
-        let appToken = Constants.APP_TOKEN
-        
-        let config = URLSessionConfiguration.default
 
-        let session = URLSession(configuration: config)
-        
-        let url = URL(string: "\(restPath)/\(CSRESTManager.signupPath)")!
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.allHTTPHeaderFields = ["app-token": appToken]
-
-        // your post request data
-        var requestBodyComponents = URLComponents()
-        if let signupData = signupData {
-            requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
-                                                URLQueryItem(name: "password", value: password.md5()),
-                                                URLQueryItem(name: "signupData", value: signupData)]
-
-        } else {
-            requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
-                                                URLQueryItem(name: "password", value: password.md5())]
-        }
-        
-        urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
-
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-        
-            // ensure there is no error for this HTTP response
-            guard error == nil else {
+        CSRESTManager.shared.getApplication(onCompletion: { (err) in
+            
+            if let error = err {
                 completion(error)
-                return
-            }
-            
-            // ensure there is data returned from this HTTP response
-            guard let content = data else {
-                completion(CSRESTError.internalServerError)
-                return
-            }
-            
-            let str = String(decoding: content, as: UTF8.self)
-            
-            if str == "true" {
-                completion(nil)
             } else {
-                completion(CSRESTError.internalServerError)
+                
+                if self.checkPassword(password) {
+                    let restPath = Constants.COSYNC_REST_ADDRESS
+                    let appToken = Constants.APP_TOKEN
+                    
+                    let config = URLSessionConfiguration.default
+
+                    let session = URLSession(configuration: config)
+                    
+                    let url = URL(string: "\(restPath)/\(CSRESTManager.signupPath)")!
+                    var urlRequest = URLRequest(url: url)
+                    urlRequest.httpMethod = "POST"
+                    urlRequest.allHTTPHeaderFields = ["app-token": appToken]
+
+                    // your post request data
+                    var requestBodyComponents = URLComponents()
+                    if let signupData = signupData {
+                        requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                            URLQueryItem(name: "password", value: password.md5()),
+                                                            URLQueryItem(name: "signupData", value: signupData)]
+
+                    } else {
+                        requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                            URLQueryItem(name: "password", value: password.md5())]
+                    }
+                    
+                    urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
+
+                    let task = session.dataTask(with: urlRequest) { data, response, error in
+                    
+                        // ensure there is no error for this HTTP response
+                        guard error == nil else {
+                            completion(error)
+                            return
+                        }
+                        
+                        // ensure there is data returned from this HTTP response
+                        guard let content = data else {
+                            completion(CSRESTError.internalServerError)
+                            return
+                        }
+                        
+                        let str = String(decoding: content, as: UTF8.self)
+                        
+                        if str == "true" {
+                            completion(nil)
+                        } else {
+                            completion(CSRESTError.internalServerError)
+                        }
+
+                    }
+                    
+                    // execute the HTTP request
+                    task.resume()
+                } else {
+                    completion(CSRESTError.invalidPassword)
+                }
             }
+        })
+
+    }
+    
+    func checkPassword(_ password: String) -> Bool {
+        
+        if let passwordFilter = self.passwordFilter,
+               passwordFilter {
+            
+            if  let passwordMinLength = self.passwordMinLength,
+                password.count < passwordMinLength {
+                return false
+            }
+            
+            if  let passwordMinUpper = self.passwordMinUpper {
+                let characters = Array(password)
+                var count = 0
+                for c in characters {
+                    let cs = String(c)
+                    if cs == cs.uppercased() && cs != cs.lowercased() {
+                        count += 1
+                    }
+                }
+                if count < passwordMinUpper {
+                    return false
+                }
+                
+            }
+            
+            if  let passwordMinLower = self.passwordMinLower {
+                let characters = Array(password)
+                var count = 0
+                for c in characters {
+                    let cs = String(c)
+                    if cs == cs.lowercased() && cs != cs.uppercased() {
+                        count += 1
+                    }
+                }
+                if count < passwordMinLower {
+                    return false
+                }
+            }
+            
+            if  let passwordMinDigit = self.passwordMinDigit {
+                let characters = Array(password)
+                var count = 0
+                for c in characters {
+                    if c.isASCII && c.isNumber {
+                        count += 1
+                    }
+                }
+                if count < passwordMinDigit {
+                    return false
+                }
+            }
+                
+            if  let passwordMinSpecial = self.passwordMinSpecial {
+                let characterset = CharacterSet(charactersIn: "@%+\\/‘!#$^?:()[]~`-_.,")
+                
+                let characters = password.unicodeScalars
+                var count = 0
+                for c in characters {
+                    if characterset.contains(c) {
+                        count += 1
+                    }
+                }
+                if count < passwordMinSpecial {
+                    return false
+                }
+                
+            }
+            
+
 
         }
         
-        // execute the HTTP request
-        task.resume()
-
+        return true
     }
     
     // Complete Singup into CosyncJWT
@@ -387,76 +483,26 @@ class CSRESTManager {
     // Reset password into CosyncJWT
     func resetPassword(_ handle: String, password: String, code: String, onCompletion completion: @escaping (Error?) -> Void) {
         
-        let restPath = Constants.COSYNC_REST_ADDRESS
-        let appToken = Constants.APP_TOKEN
-        
-        let config = URLSessionConfiguration.default
-
-        let session = URLSession(configuration: config)
-        
-        let url = URL(string: "\(restPath)/\(CSRESTManager.resetPasswordPath)")!
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.allHTTPHeaderFields = ["app-token": appToken]
-
-        // your post request data
-        var requestBodyComponents = URLComponents()
-        
-        requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
-                                            URLQueryItem(name: "password", value: password.md5()),
-                                            URLQueryItem(name: "code", value: code)]
-
-        urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
-
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-        
-            // ensure there is no error for this HTTP response
-            guard error == nil else {
-                completion(error)
-                return
-            }
+        if self.checkPassword(password) {
             
-            // ensure there is data returned from this HTTP response
-            guard let content = data else {
-                completion(CSRESTError.internalServerError)
-                return
-            }
+            let restPath = Constants.COSYNC_REST_ADDRESS
+            let appToken = Constants.APP_TOKEN
             
-            let str = String(decoding: content, as: UTF8.self)
-            
-            if str == "true" {
-                completion(nil)
-            } else {
-                completion(CSRESTError.internalServerError)
-            }
-
-        }
-        
-        // execute the HTTP request
-        task.resume()
-
-    }
-    
-    // Change password into CosyncJWT
-    func changePassword(_ newPassword: String, password: String, onCompletion completion: @escaping (Error?) -> Void) {
-        
-        let restPath = Constants.COSYNC_REST_ADDRESS
-        
-        if let accessToken = self.accessToken {
             let config = URLSessionConfiguration.default
 
             let session = URLSession(configuration: config)
             
-            let url = URL(string: "\(restPath)/\(CSRESTManager.changePasswordPath)")!
+            let url = URL(string: "\(restPath)/\(CSRESTManager.resetPasswordPath)")!
             var urlRequest = URLRequest(url: url)
             urlRequest.httpMethod = "POST"
-            urlRequest.allHTTPHeaderFields = ["access-token": accessToken]
+            urlRequest.allHTTPHeaderFields = ["app-token": appToken]
 
             // your post request data
             var requestBodyComponents = URLComponents()
             
-            requestBodyComponents.queryItems = [URLQueryItem(name: "newPassword", value: newPassword.md5()),
-                                                URLQueryItem(name: "password", value: password.md5())]
+            requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                URLQueryItem(name: "password", value: password.md5()),
+                                                URLQueryItem(name: "code", value: code)]
 
             urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
 
@@ -486,8 +532,69 @@ class CSRESTManager {
             
             // execute the HTTP request
             task.resume()
+            
+        } else {
+            completion(CSRESTError.invalidPassword)
         }
 
+    }
+    
+    // Change password into CosyncJWT
+    func changePassword(_ newPassword: String, password: String, onCompletion completion: @escaping (Error?) -> Void) {
+        
+        if self.checkPassword(password) {
+            
+            let restPath = Constants.COSYNC_REST_ADDRESS
+            
+            if let accessToken = self.accessToken {
+                let config = URLSessionConfiguration.default
+
+                let session = URLSession(configuration: config)
+                
+                let url = URL(string: "\(restPath)/\(CSRESTManager.changePasswordPath)")!
+                var urlRequest = URLRequest(url: url)
+                urlRequest.httpMethod = "POST"
+                urlRequest.allHTTPHeaderFields = ["access-token": accessToken]
+
+                // your post request data
+                var requestBodyComponents = URLComponents()
+                
+                requestBodyComponents.queryItems = [URLQueryItem(name: "newPassword", value: newPassword.md5()),
+                                                    URLQueryItem(name: "password", value: password.md5())]
+
+                urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
+
+                let task = session.dataTask(with: urlRequest) { data, response, error in
+                
+                    // ensure there is no error for this HTTP response
+                    guard error == nil else {
+                        completion(error)
+                        return
+                    }
+                    
+                    // ensure there is data returned from this HTTP response
+                    guard let content = data else {
+                        completion(CSRESTError.internalServerError)
+                        return
+                    }
+                    
+                    let str = String(decoding: content, as: UTF8.self)
+                    
+                    if str == "true" {
+                        completion(nil)
+                    } else {
+                        completion(CSRESTError.internalServerError)
+                    }
+
+                }
+                
+                // execute the HTTP request
+                task.resume()
+            }
+            
+        } else {
+            completion(CSRESTError.invalidPassword)
+        }
     }
     
     // Get application data from CosyncJWT
@@ -528,7 +635,29 @@ class CSRESTManager {
             if let name = json["name"] as? String {
                 self.appName = name
             }
-                        
+            
+            if let twoFactorVerification = json["twoFactorVerification"] as? String {
+                self.twoFactorVerification = twoFactorVerification
+            }
+            if let passwordFilter = json["passwordFilter"] as? Bool {
+                self.passwordFilter = passwordFilter
+            }
+            if let passwordMinLength = json["passwordMinLength"] as? Int {
+                self.passwordMinLength = passwordMinLength
+            }
+            if let passwordMinUpper = json["passwordMinUpper"] as? Int {
+                self.passwordMinUpper = passwordMinUpper
+            }
+            if let passwordMinLower = json["passwordMinLower"] as? Int {
+                self.passwordMinLower = passwordMinLower
+            }
+            if let passwordMinDigit = json["passwordMinDigit"] as? Int {
+                 self.passwordMinDigit = passwordMinDigit
+            }
+            if let passwordMinSpecial = json["passwordMinSpecial"] as? Int {
+                 self.passwordMinSpecial = passwordMinSpecial
+            }
+
             if let appData = json["appData"] as? [String: Any] {
                 self.appData = appData
             }
@@ -651,64 +780,79 @@ class CSRESTManager {
     // register into CosyncJWT
     func register(_ handle: String, password: String, code: String, onCompletion completion: @escaping (Error?) -> Void) {
         
-        let restPath = Constants.COSYNC_REST_ADDRESS
-        let appToken = Constants.APP_TOKEN
-        
-        let config = URLSessionConfiguration.default
-
-        let session = URLSession(configuration: config)
-        
-        let url = URL(string: "\(restPath)/\(CSRESTManager.registerPath)")!
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-        urlRequest.allHTTPHeaderFields = ["app-token": appToken]
-
-        // your post request data
-        var requestBodyComponents = URLComponents()
-        requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
-                                            URLQueryItem(name: "password", value: password.md5()),
-                                            URLQueryItem(name: "code", value: code)]
-        
-        urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
-
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-        
-            // ensure there is no error for this HTTP response
-            guard error == nil else {
+        CSRESTManager.shared.getApplication(onCompletion: { (err) in
+            
+            if let error = err {
                 completion(error)
-                return
-            }
-            
-            // ensure there is data returned from this HTTP response
-            guard let content = data else {
-                completion(CSRESTError.internalServerError)
-                return
-            }
-            
-            // serialise the data / NSData object into Dictionary [String : Any]
-            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
-                completion(CSRESTError.internalServerError)
-                return
-            }
-            
-            if let jwt = json["jwt"] as? String,
-               let accessToken = json["access-token"] as? String,
-               let signedUserToken = json["signed-user-token"] as? String {
-                
-                self.jwt = jwt
-                self.accessToken = accessToken
-                self.signedUserToken = signedUserToken
-
-                completion(nil)
             } else {
-                completion(CSRESTError.internalServerError)
+                
+                if self.checkPassword(password) {
+
+                    let restPath = Constants.COSYNC_REST_ADDRESS
+                    let appToken = Constants.APP_TOKEN
+                    
+                    let config = URLSessionConfiguration.default
+
+                    let session = URLSession(configuration: config)
+                    
+                    let url = URL(string: "\(restPath)/\(CSRESTManager.registerPath)")!
+                    var urlRequest = URLRequest(url: url)
+                    urlRequest.httpMethod = "POST"
+                    urlRequest.allHTTPHeaderFields = ["app-token": appToken]
+
+                    // your post request data
+                    var requestBodyComponents = URLComponents()
+                    requestBodyComponents.queryItems = [URLQueryItem(name: "handle", value: handle),
+                                                        URLQueryItem(name: "password", value: password.md5()),
+                                                        URLQueryItem(name: "code", value: code)]
+                    
+                    urlRequest.httpBody = requestBodyComponents.query?.data(using: .utf8)
+
+                    let task = session.dataTask(with: urlRequest) { data, response, error in
+                    
+                        // ensure there is no error for this HTTP response
+                        guard error == nil else {
+                            completion(error)
+                            return
+                        }
+                        
+                        // ensure there is data returned from this HTTP response
+                        guard let content = data else {
+                            completion(CSRESTError.internalServerError)
+                            return
+                        }
+                        
+                        // serialise the data / NSData object into Dictionary [String : Any]
+                        guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
+                            completion(CSRESTError.internalServerError)
+                            return
+                        }
+                        
+                        if let jwt = json["jwt"] as? String,
+                           let accessToken = json["access-token"] as? String,
+                           let signedUserToken = json["signed-user-token"] as? String {
+                            
+                            self.jwt = jwt
+                            self.accessToken = accessToken
+                            self.signedUserToken = signedUserToken
+
+                            completion(nil)
+                        } else {
+                            completion(CSRESTError.internalServerError)
+                        }
+
+                    }
+                    
+                    // execute the HTTP request
+                    task.resume()
+                    
+                    
+                } else {
+                    completion(CSRESTError.invalidPassword)
+                }
             }
-
-        }
+        })
         
-        // execute the HTTP request
-        task.resume()
-
     }
     
     func logout() {

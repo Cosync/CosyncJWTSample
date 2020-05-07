@@ -42,9 +42,15 @@ class SignupViewController: UIViewController {
     }
     
     //Pop-up login failed alert when users input incorrect email or password
-    func showSignupFailedAlert(){
+    func showSignupFailedAlert(_ error: Error?){
         
-        let alert = UIAlertController(title: "Signup Failed", message: "You have entered an invalid handle or password.", preferredStyle: .alert)
+        var message = "You have entered an invalid handle or password."
+        if let errorRest = error as? CSRESTManager.CSRESTError,
+               errorRest == .invalidPassword {
+            message = "your password is not secure"
+        }
+        
+        let alert = UIAlertController(title: "Signup Failed", message: message, preferredStyle: .alert)
         
         let action = UIAlertAction(title: "OK", style: .default, handler: nil)
         
@@ -70,7 +76,7 @@ class SignupViewController: UIViewController {
             let passwordText = self.password?.text {
             
             if handleText.count == 0 || passwordText.count == 0 {
-                self.showSignupFailedAlert()
+                self.showSignupFailedAlert(nil)
             } else {
                 
                 if self.checkSingupData() {
@@ -88,9 +94,14 @@ class SignupViewController: UIViewController {
                             spinner.removeFromSuperview()
                             
                             if let error = err {
+                                
+                                if let errorRest = error as? CSRESTManager.CSRESTError,
+                                       errorRest == .invalidPassword {
+                                    NSLog("it is bad")
+                                }
                     
                                 NSLog(error.localizedDescription)
-                                self.showSignupFailedAlert()
+                                self.showSignupFailedAlert(error)
                             } else {
                                 
                                 self.performSegue(withIdentifier: "signupVerifySegue", sender: self)

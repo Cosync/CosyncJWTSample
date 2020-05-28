@@ -41,20 +41,21 @@ class CSRealmManager {
             if let err = err {
                 completion(err)
             } else {
-                NSLog("Login Success")
-                
-                let authURL = Constants.AUTH_URL
-                
-                if let jwt = CSRESTManager.shared.jwt {
-                    let creds = SyncCredentials.jwt(jwt)
-                    SyncUser.logIn(with: creds, server: authURL, onCompletion: { (user, err) in
-                        if let _ = user {
+                DispatchQueue.main.async {
+                    NSLog("Login Success")
+                    
+                    let authURL = Constants.AUTH_URL
+                    
+                    if let jwt = CSRESTManager.shared.jwt {
+                        let creds = SyncCredentials.jwt(jwt)
+                        SyncUser.logIn(with: creds, server: authURL, onCompletion: { (user, err) in
+                            if let _ = user {
 
-                        }
-                        completion(err)
-                    })
+                            }
+                            completion(err)
+                        })
+                    }
                 }
-
             }
         })
     }

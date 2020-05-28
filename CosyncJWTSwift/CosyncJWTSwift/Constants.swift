@@ -27,11 +27,11 @@ import Foundation
 
 struct Constants {
     
-    static let MY_INSTANCE_ADDRESS = "" // <- update this
+    static let MY_INSTANCE_ADDRESS = "tototestapp.us2a.cloud.realm.io" // <- update this
     static let APP_TOKEN = "" // <- update this
     static let SUPERUSER_ACCESS_TOKEN = "" // <- update this
     
-    static let COSYNC_REST_ADDRESS = "https://rest-dev.cosync.net"
+    static let COSYNC_REST_ADDRESS = "https://rest.cosync.net"
     static let AUTH_URL  = URL(string: "https://\(MY_INSTANCE_ADDRESS)")!
     static let REALM_URL = URL(string: "realms://\(MY_INSTANCE_ADDRESS)/")!
 

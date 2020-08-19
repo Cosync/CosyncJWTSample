@@ -55,5 +55,6 @@ XCode Project
 * Open generated workspace file
 * Copy the Realm id from the top left button in the Realm panel in the web UI
 * Edit the REALM_APP_ID in the Constants.swift function with the copied Realm Id
+* Edit the APP_TOKEN in the Constants.swift function with the APP_TOKEN from the CosyncJWT portal
 
 Run the app

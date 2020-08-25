@@ -27,7 +27,7 @@
  * For questions about this license, you may write to mailto:info@cosync.io
 */
 
-
+const _ = require('lodash');
 let request = require("request"); 
 let config = require("../config");
 let Realm = require('realm');
@@ -87,10 +87,12 @@ class HttpService {
                     const credentials = Realm.Credentials.custom(jwtToken);  
                     console.log("Realm Login....");
                     realmApp.logIn(credentials).then(user => { 
-                        configstore.set("jwtToken", jwtToken); 
+                        
                         let userId = user.identity || user.id;
-                       
+
+                        configstore.set("jwtToken", jwtToken); 
                         configstore.set("uid", userId);  
+
                         body.realmUserId = userId;
                         that.render(body, err); 
                     });
@@ -149,21 +151,28 @@ class HttpService {
     };
 
 
-    invite(accessToken, handle) { 
+    async invite(handle) { 
 
-        let meteData = {
-            'email': handle
-        };
+        let meteData = {};
+
+        let appData = await this.getAppData();
+
+        if(appData.metaData.length){
+            _.forEach(appData.metaData, function(field) {
+                let value = field.fieldName == 'email' ? handle : "test value";
+                if(field.required) _.set(meteData, field.path, value)
+            });
+        }
       
         const options = {
             url: `${config.apiurl}api/appuser/invite`,
             headers: {
               'app-token': config.appToken,
-              'access-token' : accessToken
+              'access-token' : configstore.get('accessToken')
             },
             form:{
                 handle: handle,  
-                senderUserId: 'senderUserId',
+                senderUserId: configstore.get('uid'),
                 meteData: JSON.stringify(meteData)
             }
         };
@@ -176,8 +185,7 @@ class HttpService {
 
 
     register(handle, password, code) { 
-        
-      
+
         const options = {
             url: `${config.apiurl}api/appuser/register`,
             headers: {
@@ -198,8 +206,7 @@ class HttpService {
 
 
     getUser(accessToken) { 
-       
-      
+
         const options = {
             url: `${config.apiurl}api/appuser/getUser`,
             headers: {
@@ -213,9 +220,26 @@ class HttpService {
         })
     };
 
+    getAppData(){
+         
+        return new Promise((resovle, reject) => {
 
-    getApplication() { 
-       
+            const options = {
+                url: `${config.apiurl}api/appuser/getApplication`,
+                headers: {
+                  'app-token': config.appToken 
+                } 
+            }; 
+
+            request.get(options, function(err, httpResponse, body){  
+                resovle(JSON.parse(body));
+            })
+
+        });
+    }
+
+
+    getApplication() {
       
         const options = {
             url: `${config.apiurl}api/appuser/getApplication`,
@@ -241,6 +265,7 @@ class HttpService {
                 handle: handle 
             }
         };
+
         let that = this;
         request.post(options, function(err,httpResponse, body){ 
             that.render(body, err);
@@ -261,6 +286,7 @@ class HttpService {
                 code: code
             }
         };
+
         let that = this;
         request.post(options, function(err,httpResponse, body){ 
             that.render(body, err);

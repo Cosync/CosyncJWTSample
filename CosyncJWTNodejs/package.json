@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "configstore": "^5.0.1",
+    "lodash": "^4.17.20",
     "md5": "^2.2.1",
     "realm": "^10.0.0-beta.6",
     "request": "^2.88.2"

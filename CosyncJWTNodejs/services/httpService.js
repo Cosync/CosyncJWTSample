@@ -48,6 +48,8 @@ class HttpService {
         else console.log(err);
 
         console.log('\n<<<<<<<<<<END OF RESULT: >>>>>>>>>>>>>> \n');
+
+        process.exit(0);
     }
   
     login(handle, md5Password) { 
@@ -140,11 +142,18 @@ class HttpService {
     }
 
 
-    signup(handle, password) { 
+    async signup(handle, password) { 
         
-        let meteData = {
-            email: handle
-        };
+        let meteData = {};
+        let appData = await this.getAppData();
+        
+        if(appData.metaData.length){
+            _.forEach(appData.metaData, function(field) {
+                let value = field.fieldName == 'email' ? handle : "test value";
+                if(field.required) _.set(meteData, field.path, value)
+            });
+        } 
+        
         const options = {
             url: `${config.apiurl}api/appuser/signup`,
             headers: {
@@ -187,6 +196,7 @@ class HttpService {
         let meteData = {};
 
         let appData = await this.getAppData();
+ 
 
         if(appData.metaData.length){
             _.forEach(appData.metaData, function(field) {

@@ -9,8 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "configstore": "^5.0.1",
     "md5": "^2.2.1",
-    "realm": "^3.6.5",
+    "realm": "^10.0.0-beta.6",
     "request": "^2.88.2"
   }
 }

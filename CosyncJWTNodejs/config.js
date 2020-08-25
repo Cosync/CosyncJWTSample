@@ -30,10 +30,10 @@
 
 
 var config = {
-    apiurl:"https://rest.cosync.net/",
-    realm: "",
-    //apiurl:"http://localhost:3000/",
-    appToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImRlNzFmMjcxNDI5ODRlZWJhMWFhMWE2OGFmM2QxNWUzIiwic2NvcGUiOiJhcHAiLCJpYXQiOjE1ODM0NjE4NjV9.YbEzZqYDZR6iqYmTfOApcq7MwSH0bfwbOT-blDIYnr05b1By-Sw5DAX38R0-v-8MnS-_RN-P92k6KOtdbooeRaBHIEyv3ISfrDTnaAKDadjE8kgEr4VdorZv5r1Zp1yVgHMXpdMHo0h6cY5nHgd-XjNXCe012SftxmjqJvbgJw9UdhuOn1nvsq36EVZyOkzRLrwlg0_wVDMu-fIbziGMabViRP_lKqBQmr_HlqAqTDlYg1KijQ62KndNR0xQhKDpSTWg4bWd69sCaTkFVj_vNQ4ppKxd8sUC3i5i4R__oHmyK1Gfm4v1d-4MqUHdOcmaTm6FGH73zcLS2Gz-Ot6uOg"
+    //apiurl:"https://rest.cosync.net/",
+    appId: "application-0-nnfqm",
+    apiurl:"http://localhost:3000/",
+    appToken: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6IjM5ZjMxN2MzZGJlOTQzMGE4OTIwN2RhZTZmMjNkMGYzIiwic2NvcGUiOiJhcHAiLCJpYXQiOjE1OTYyMDU1MTJ9.YuuLyOC1hYeEYaQixgmpIWCkMZ0DqTweB_qLTLvIzlLJzXWfQ1aYdraiqyjr_swUSYwJC7Zvb70wMbhkLYg0NYLYQ3HAb2ILsglJQHpqz035DH6oehT_-m75E_gGmQQKn2YqyP9WrsxqmmLJm54sCjghkN6aRkT3aiKVu1dWHDaqm4k93Orn20zmnvpeLvIW9QWz-y1pVGc0zJ7OlHzmhaytVTkVsGzt4VB6WFlKaqfPH0qxEhON3VyYl4MnxS48x9zi2hAISLKcHWPxlRaP33_vlYwNHEZFjkAlDB5vnoT8RGB8IkjtBRKh4E2zBEtM1zqm75_Ul2mjBoLOhvKsf-V22KwgvB9_ng_H7BH851b4Uvc-_UlbEQELrCE-UtBOjAiWBe1bNCOcQuYlvi1Fdib1JSNlBpKs6pBc23n8klgEHbJcQvVZ-cVysBUtfnt1W2tb51Ie3Lidab8DzPYa_fi_9ooZXta8ivimo09e_HavGwMGebkzCmWypldvavmB"
 }
 
 module.exports = config;

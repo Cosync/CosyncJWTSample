@@ -45,16 +45,15 @@ switch (service) {
 
     case 'signup':
         handle = process.argv[3];
-        httpService.signup(handle);
+        passowrd = md5(process.argv[4]);
+        httpService.signup(handle, passowrd);
     
         break;
 
     case 'completeSignup':
-        handle = process.argv[3];
-        passowrd = md5(process.argv[4]);
-        code = process.argv[5];
-
-        httpService.completeSignup(handle, passowrd, code);
+        handle = process.argv[3]; 
+        code = process.argv[4];
+        httpService.completeSignup(handle, code);
         break;
 
     case 'invite':

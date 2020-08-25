@@ -31,6 +31,8 @@
 let request = require("request"); 
 let config = require("../config");
 let Realm = require('realm');
+let Configstore = require("configstore");
+let configstore = new Configstore(config.name);
 
 class HttpService {
 
@@ -60,49 +62,65 @@ class HttpService {
             }
         };
         let that = this;
+        console.log("cosync jwt Login....");
         request.post(options, function(err, httpResponse, body){ 
             if(body) {
                 try { 
+                    body = JSON.parse(body);
+
+                    let jwtToken = body.jwt.split('"').join('');
+                    jwtToken = jwtToken.trim();
+    
+                    if(body['access-token']){
+                        let accessToken = body['access-token'].split('"').join('');
+                        accessToken = accessToken.trim();
+                        configstore.set('accessToken', accessToken);
+                    } 
+
+                    const appConfig = {
+                        id: config.appId,
+                        timeout: 10000,
+                    };
                 
-                    let data = JSON.parse(body);
-                    let users = Realm.Sync.User.all;
-            
-                    for(const key in users) {
-                        const user = users[key];
-                        if(user) user.logout();
-                    }
+                    let realmApp = new Realm.App(appConfig);  
 
-                    const credentials = Realm.Sync.Credentials.jwt(data.jwt);
-                    let url = config.realm;
-                    url = url.split('https://').join('');
-                    url = url.split('http://').join('');
-
-                    console.log("Connecting to realm => ", url);
-                    
-                    Realm.Sync.User.login(`https://${url}`, credentials) 
-                    .then(user => {
-                        console.log("Realm Login! user = ", user.identity);
+                    const credentials = Realm.Credentials.custom(jwtToken);  
+                    console.log("Realm Login....");
+                    realmApp.logIn(credentials).then(user => { 
+                        configstore.set("jwtToken", jwtToken); 
+                        let userId = user.identity || user.id;
+                       
+                        configstore.set("uid", userId);  
+                        body.realmUserId = userId;
+                        that.render(body, err); 
                     });
 
+                    
+
                 } catch (error) {
-                    console.log("Whoop! something wet wrong");
+                    console.log("Whoop! something wet wrong: ", error);
                 }
             }
 
-            that.render(body, err);
+           
         })
     };
 
 
-    signup(handle) { 
+    signup(handle, password) { 
         
+        let meteData = {
+            email: handle
+        };
         const options = {
             url: `${config.apiurl}api/appuser/signup`,
             headers: {
               'app-token': config.appToken
             },
             form:{
-                handle:handle 
+                handle: handle,
+                password: password,
+                meteData: JSON.stringify(meteData)
             }
         };
         let that = this;
@@ -112,12 +130,7 @@ class HttpService {
     };
 
 
-    completeSignup(handle, md5Password, code) {
-
-        
-        let onboardingData = {
-            'rule':'testRule'
-        };
+    completeSignup(handle, code) { 
       
         const options = {
             url: `${config.apiurl}api/appuser/completeSignup`,
@@ -125,10 +138,8 @@ class HttpService {
               'app-token': config.appToken
             },
             form:{
-                handle:handle,
-                password: md5Password,
-                code : code,
-                onboardingData: JSON.stringify(onboardingData)
+                handle:handle, 
+                code : code 
             }
         };
         let that = this;
@@ -139,8 +150,9 @@ class HttpService {
 
 
     invite(accessToken, handle) { 
-        let inviteData = {
-            'rule':'testRule'
+
+        let meteData = {
+            'email': handle
         };
       
         const options = {
@@ -150,8 +162,9 @@ class HttpService {
               'access-token' : accessToken
             },
             form:{
-                handle: handle, 
-                inviteData: JSON.stringify(inviteData)
+                handle: handle,  
+                senderUserId: 'senderUserId',
+                meteData: JSON.stringify(meteData)
             }
         };
         let that = this;

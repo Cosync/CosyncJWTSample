@@ -42,6 +42,12 @@ switch (service) {
         httpService.login(handle, passowrd);
 
         break;
+    case 'loginComplete':
+        handle = process.argv[3];
+        passowrd = md5(process.argv[4]);
+        httpService.loginComplete(code);
+
+        break;
 
     case 'signup':
         handle = process.argv[3];

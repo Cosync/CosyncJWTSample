@@ -68,34 +68,11 @@ class HttpService {
                 try { 
                     body = JSON.parse(body);
 
-                    let jwtToken = body.jwt.split('"').join('');
-                    jwtToken = jwtToken.trim();
-    
-                    if(body['access-token']){
-                        let accessToken = body['access-token'].split('"').join('');
-                        accessToken = accessToken.trim();
-                        configstore.set('accessToken', accessToken);
-                    } 
-
-                    const appConfig = {
-                        id: config.appId,
-                        timeout: 10000,
-                    };
-                
-                    let realmApp = new Realm.App(appConfig);  
-
-                    const credentials = Realm.Credentials.custom(jwtToken);  
-                    console.log("Realm Login....");
-                    realmApp.logIn(credentials).then(user => { 
-                        
-                        let userId = user.identity || user.id;
-
-                        configstore.set("jwtToken", jwtToken); 
-                        configstore.set("uid", userId);  
-
-                        body.realmUserId = userId;
+                    if(body.jwt) that.realmLogin(body);
+                    else{
+                        configstore.set('loginToken', body['login-token']), 
                         that.render(body, err); 
-                    });
+                    }
 
                     
 
@@ -107,6 +84,60 @@ class HttpService {
            
         })
     };
+
+
+    loginComplete(code) { 
+      
+        const options = {
+            url: `${config.apiurl}api/appuser/loginComplete`,
+            headers: {
+              'app-token': config.appToken
+            },
+            form:{
+                token: configstore.get('loginToken'), 
+                code : code 
+            }
+        };
+        let that = this;
+        request.post(options, function(err,httpResponse, body){ 
+            body = JSON.parse(body); 
+            if(body.jwt) that.realmLogin(body);
+        })
+    };
+
+
+
+    realmLogin(data){
+        let jwtToken = data.jwt.split('"').join('');
+        jwtToken = jwtToken.trim();
+
+        if(data['access-token']){
+            let accessToken = data['access-token'].split('"').join('');
+            accessToken = accessToken.trim();
+            configstore.set('accessToken', accessToken);
+        } 
+
+        const appConfig = {
+            id: config.appId,
+            timeout: 10000,
+        };
+    
+        let realmApp = new Realm.App(appConfig);  
+
+        const credentials = Realm.Credentials.custom(jwtToken);  
+        console.log("Realm Login....");
+        realmApp.logIn(credentials).then(user => { 
+            
+            let userId = user.identity || user.id;
+
+            configstore.set("jwtToken", jwtToken); 
+            configstore.set("uid", userId);  
+
+            data.realmUserId = userId;
+
+            this.render(data); 
+        });
+    }
 
 
     signup(handle, password) { 

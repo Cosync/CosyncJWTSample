@@ -6,7 +6,7 @@ target 'CosyncJWTiOS' do
   use_frameworks!
 
   # Pods for CosyncJWTiOS
-  pod 'RealmSwift', '=10.0.0-beta.2'
+  pod 'RealmSwift', '=10.0.0-beta.3'
   pod 'CryptoSwift'
 
 end

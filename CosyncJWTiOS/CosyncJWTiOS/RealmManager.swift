@@ -13,10 +13,10 @@ class RealmManager {
     
     static let shared = RealmManager()
             
-    var app : RealmApp! = nil
+    var app : App! = nil
 
     private init() {
-        self.app = RealmApp(id: Constants.REALM_APP_ID)
+        self.app = App(id: Constants.REALM_APP_ID)
     }
     
     deinit {
@@ -24,7 +24,7 @@ class RealmManager {
     
     func login(_ jwt: String, onCompletion completion: @escaping (Error?) -> Void) {
 
-        app.login(withCredential: AppCredentials(jwt: jwt)) { (user, error) in
+        app.login(credentials: Credentials(jwt: jwt)) { (user, error) in
             
             guard error == nil else {
                 completion(RESTError.internalServerError)
@@ -38,15 +38,18 @@ class RealmManager {
     
     func logout(onCompletion completion: @escaping (Error?) -> Void) {
         
-        app.logOut(completion: { (error) in
-            
-            guard error == nil else {
-                completion(RESTError.internalServerError)
-                return
-            }
-            
-            completion(nil)
-        })
+        if let user = app.currentUser() {
+            user.logOut(completion: { (error) in
+                
+                guard error == nil else {
+                    completion(RESTError.internalServerError)
+                    return
+                }
+                
+                completion(nil)
+            })
+        }
+    
     }
     
 }

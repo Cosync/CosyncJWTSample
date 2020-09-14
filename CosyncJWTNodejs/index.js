@@ -56,7 +56,7 @@ switch (service) {
     
         break;
 
-    case 'completeSignup':
+    case 'register':
         handle = process.argv[3]; 
         code = process.argv[4];
         httpService.completeSignup(handle, code);
@@ -98,6 +98,10 @@ switch (service) {
     case 'getApplication':
         
         httpService.getApplication();
+        break;
+    default:
+        console.error("no function is found for ", service);
+        process.
         break;
 }
  

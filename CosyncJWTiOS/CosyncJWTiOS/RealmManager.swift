@@ -24,21 +24,22 @@ class RealmManager {
     
     func login(_ jwt: String, onCompletion completion: @escaping (Error?) -> Void) {
 
-        app.login(credentials: Credentials(jwt: jwt)) { (user, error) in
+        app.login(credentials: Credentials.jwt(token: jwt)) { result in
             
-            guard error == nil else {
+            switch result {
+            case .success( _):
+                completion(nil)
+            case .failure( _):
                 completion(RESTError.internalServerError)
-                return
             }
             
-            completion(nil)
         }
         
     }
     
     func logout(onCompletion completion: @escaping (Error?) -> Void) {
         
-        if let user = app.currentUser() {
+        if let user = app.currentUser {
             user.logOut(completion: { (error) in
                 
                 guard error == nil else {

@@ -687,7 +687,7 @@ class RESTManager {
         
         let restPath = Constants.COSYNC_REST_ADDRESS
         if let accessToken = self.accessToken,
-           let senderUserId = RealmManager.shared.app.currentUser()?.id {
+           let senderUserId = RealmManager.shared.app.currentUser?.id {
             
             let config = URLSessionConfiguration.default
             let session = URLSession(configuration: config)

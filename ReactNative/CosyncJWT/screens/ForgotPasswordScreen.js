@@ -122,6 +122,12 @@ const ForgotPasswordScreen = props => {
       alert('Please fill Password');
       return;
     }
+
+    if (userPassword.length < 5) {
+      alert('Password must be at least 5 charactor.');
+      return false;
+    } 
+    
     if (!resetCode) {
       alert('Please fill code');
       return;

@@ -161,16 +161,28 @@ const LoginScreen = props => {
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
 
-            <Text
-              style={styles.registerTextStyle}
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
               onPress={() => props.navigation.navigate('RegisterScreen')}>
-              Create New Account
-            </Text>
-            { <Text
+              <Text style={styles.buttonTextStyle}>Register New Account</Text>
+            </TouchableOpacity>
+
+           
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={() => props.navigation.navigate('SignupScreen')}>
+              <Text style={styles.buttonTextStyle}> Signup New Account</Text>
+            </TouchableOpacity>
+
+ 
+
+            <Text
               style={styles.registerTextStyle}
               onPress={() => props.navigation.navigate('ForgotPasswordScreen')}>
               Forgot Password
-            </Text>}
+            </Text>
 
 
           </KeyboardAvoidingView>

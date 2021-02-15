@@ -29,6 +29,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import SplashScreen from './screens/SplashScreen';
 import LoginScreen from './screens/LoginScreen'; 
 import RegisterScreen from './screens/RegisterScreen'; 
+import SignupScreen from './screens/SignupScreen'; 
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen'; 
 import DrawerNavigationRoutes from './components/DrawerNavigationRoutes';
 
@@ -44,6 +45,16 @@ const Auth = createStackNavigator({
     screen: RegisterScreen,
     navigationOptions: {
       title: 'Register',
+      headerStyle: {
+        backgroundColor: '#307ecc',
+      },
+      headerTintColor: '#fff',
+    },
+  },
+  SignupScreen: {
+    screen: SignupScreen,
+    navigationOptions: {
+      title: 'Signup',
       headerStyle: {
         backgroundColor: '#307ecc',
       },

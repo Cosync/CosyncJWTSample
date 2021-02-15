@@ -26,6 +26,55 @@ import Configure from '../config/Config'
 import Request from '../components/Request'; 
 import md5 from 'md5';
 
+
+
+export const register = (firstName, lastName, handle, userPassword, code) => {
+    return new Promise((resolve, reject) => { 
+
+        let metaData = {
+            name: {
+                first: firstName,
+                last: lastName
+            },
+            email: handle
+        };
+
+
+        let dataToSend = {
+            handle: handle,
+            code: code,
+            password: md5(userPassword),
+            metaData : JSON.stringify(metaData)
+        }; 
+        
+        Request(`${Configure.CosyncApp.apiURL}/api/appuser/register`, dataToSend, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
+                'app-token': Configure.CosyncApp.appToken
+            },
+             
+        }, (progressEvent) => { 
+            
+           
+        }).then((res) => { 
+            
+            try {
+                
+                let respone = JSON.parse(res._response); 
+                if(res.status == 200 ) resolve(respone)
+                else reject(respone)
+
+            } catch (error) {
+                reject(res._response)
+            }
+            
+
+        }, (err) => reject(err) )
+        
+    })
+}
+
 export const signup = (firstName, lastName, handle, userPassword) => {
     return new Promise((resolve, reject) => { 
 
@@ -70,7 +119,7 @@ export const signup = (firstName, lastName, handle, userPassword) => {
         }, (err) => reject(err) )
         
     })
-  }
+}
   
   export const completeSignup = (handle , code) => {
     return new Promise((resolve, reject) => { 

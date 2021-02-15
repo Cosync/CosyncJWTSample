@@ -1,5 +1,5 @@
 //
-//  RegisterScreen.js
+//  SignupScreen.js
 //  CosyncJWT
 //
 //  Licensed to the Apache Software Foundation (ASF) under one
@@ -39,7 +39,7 @@ import * as RealmLib from '../managers/RealmManager';
 import Loader from '../components/Loader'; 
   
 
-const RegisterScreen = props => {
+const SignupScreen = props => {
   
   let [errorcodetext, setErrorCodetext] = useState('');
   let [errortext, setErrortext] = useState('');
@@ -49,12 +49,12 @@ const RegisterScreen = props => {
   let [userEmail, setUserEmail] = useState('');
   let [userPassword, setUserPassword] = useState(''); 
   let [signupCode, setSignupCode] = useState(''); 
-  let [loading, setLoading] = useState(false);  
+  let [loading, setLoading] = useState(false); 
+  let [verifyCode, setVerifyCode] = useState(false);  
 
   const ref_input_lastname = useRef();
   const ref_input_email = useRef();
   const ref_input_pwd = useRef(); 
-  const ref_input_code = useRef(); 
 
   global.realm = null;
   global.realmPrivate = null; 
@@ -65,7 +65,7 @@ const RegisterScreen = props => {
     });
    
   }, []);
-
+  
   const validateEmail = (text) => {
   
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -98,11 +98,7 @@ const RegisterScreen = props => {
       alert('Please Fill Password');
       return false;
     }
-
-    if (!signupCode) {
-      alert('Please Fill Invitation Code');
-      return false;
-    }
+ 
       
     if (userPassword.length < 5) {
       alert('Password must be at least 5 charactor.');
@@ -111,7 +107,34 @@ const RegisterScreen = props => {
 
     return true;
   }
- 
+
+  const handleSubmitVerifyCodePress = () => {
+    setLoading(true);   
+
+    CosyncJWT.completeSignup(userEmail, signupCode).then(result => {
+      setLoading(false); 
+
+      if(result){ 
+
+        console.log('completeSignup ', result);
+
+        setInfoText('Successfully Register.'); 
+        AsyncStorage.setItem('access-token', result['access-token']); 
+
+        
+        props.navigation.navigate('DrawerNavigationRoutes');
+      }
+      else{
+        
+        setErrorCodetext(`Error: ${result.message}`);
+      }
+    }).catch(err => { 
+
+      setLoading(false); 
+      setErrorCodetext(`Error: ${err.message}`);
+    })
+  }
+  
   const handleSubmitPress = () => {
 
     setErrortext('');
@@ -124,17 +147,22 @@ const RegisterScreen = props => {
     setLoading(true);   
     
   
-    CosyncJWT.register(firstName, lastName, userEmail, userPassword, signupCode).then(result => {
+    CosyncJWT.signup(firstName, lastName, userEmail, userPassword).then(result => {
 
       setLoading(false);   
+
       
       console.log('result ', result);
+      if(result == 'true' || result === true){ 
 
-      if(result.jwt){ 
-        AsyncStorage.setItem('access-token', result['access-token']); 
+        if(global.appData.signupFlow == 'none'){ 
+          setInfoText('Successfully Register.');  
+        }
+        else{
+          setInfoText(`Please check your email for account verification ${global.appData.signupFlow}`); 
+          if(global.appData.signupFlow == 'code') setVerifyCode(true);
+        }
         
-        props.navigation.navigate('DrawerNavigationRoutes');
-       
       }
       else{
         
@@ -221,35 +249,19 @@ const RegisterScreen = props => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={value => setUserPassword(value)} 
+                onChangeText={value => setUserPassword(value)}
+                //underlineColorAndroid="#4638ab"
                 placeholder="Enter Password"
                 keyboardType="default" 
-                returnKeyType="next" 
+                returnKeyType="go" 
                 blurOnSubmit={false}
                 secureTextEntry={true}
                 ref={ref_input_pwd}
                 textContentType={'none'}
                 autoComplete= {'off'}
-                onSubmitEditing={() => ref_input_code.current.focus()}
+                onSubmitEditing={() => Keyboard.dismiss, handleSubmitPress}
               />
             </View> 
-
-            <View style={styles.SectionStyle}>
-                <TextInput
-                  style={styles.inputStyle}
-                  onChangeText={value => setSignupCode(value)} 
-                  placeholder="Enter Invitation Code"
-                  keyboardType="numeric" 
-                  returnKeyType="go" 
-                  blurOnSubmit={false} 
-                  textContentType={'none'}
-                  autoComplete= {'off'}
-                  ref={ref_input_code}
-                  onSubmitEditing={() => Keyboard.dismiss, handleSubmitPress}
-                /> 
-
-              </View> 
-
             {errortext != '' ? (
               <Text style={styles.errorTextStyle}> {errortext} </Text>
             ) : null}
@@ -263,7 +275,36 @@ const RegisterScreen = props => {
 
             {infotext != '' ? (
               <Text style={styles.registerTextStyle}> {infotext} </Text>
-            ) : null} 
+            ) : null}
+
+            {verifyCode ?<View> 
+              <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={value => setSignupCode(value)} 
+                  placeholder="Enter Signupb Code"
+                  keyboardType="numeric" 
+                  returnKeyType="go" 
+                  blurOnSubmit={false} 
+                  textContentType={'none'}
+                  autoComplete= {'off'}
+                  onSubmitEditing={() => Keyboard.dismiss, handleSubmitVerifyCodePress}
+                /> 
+
+              </View> 
+
+              {errorcodetext != '' ? (
+              <Text style={styles.errorTextStyle}> {errorcodetext} </Text>
+            ) : null}
+
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                activeOpacity={0.5}
+                onPress={handleSubmitVerifyCodePress}>
+                <Text style={styles.buttonTextStyle}>SUBMIT</Text>
+              </TouchableOpacity>
+
+            </View>: null}
 
         </KeyboardAvoidingView>
       </ScrollView>
@@ -271,7 +312,7 @@ const RegisterScreen = props => {
 
   );
 };
-export default RegisterScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
   mainBody: {

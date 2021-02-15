@@ -247,37 +247,20 @@ export const signup = (firstName, lastName, handle, userPassword) => {
     export const getCosyncApplicationData = () => {
         return new Promise((resolve, reject) => {  
 
-            let dataToSend = {
-                handle: 'handle' 
-            }; 
-
-            Request(`${Configure.CosyncApp.apiURL}/api/appuser/getApplication`,dataToSend, {
-                method: 'POST',
+            let option = {
+                method: 'GET',
                 headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                     'app-token': Configure.CosyncApp.appToken
                 },
-                
-            }, (progressEvent) => { 
-                
-            
-            }).then((res) => { 
-                try {
+            };  
 
-                    let respone = JSON.parse(res._response); 
-                    if(res.status == 200 ) resolve(respone)
-                    else reject(respone)
-
-                } catch (error) {
-                    console.log(error);
-                    reject(res._response)
-                }
-                
-
-            }, (err) => {
-                console.log(err);
-                reject(err)
-            })
+            fetch(`${Configure.CosyncApp.apiURL}/api/appuser/getApplication`, option)
+            .then((response) => response.json())
+            .then((json) => resolve(json))
+            .catch((error) => reject(error));  
+ 
         })
     }
     

@@ -127,7 +127,7 @@ const ForgotPasswordScreen = props => {
       alert('Password must be at least 5 charactor.');
       return false;
     } 
-    
+
     if (!resetCode) {
       alert('Please fill code');
       return;
@@ -238,20 +238,7 @@ const ForgotPasswordScreen = props => {
                 activeOpacity={0.5}
                 onPress={handleResetPassword}>
                 <Text style={styles.buttonTextStyle}>SUBMIT</Text>
-              </TouchableOpacity>
-
-
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => props.navigation.navigate('RegisterScreen')}>
-              Create New Account
-            </Text>
-            { <Text
-              style={styles.registerTextStyle}
-              onPress={() => props.navigation.navigate('LoginScreen')}>
-              Login
-            </Text>}
-
+            </TouchableOpacity> 
 
           </KeyboardAvoidingView>
         </View>

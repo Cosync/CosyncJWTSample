@@ -34,8 +34,7 @@ import {  StyleSheet,
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView, } from 'react-native';
-import * as CosyncJWT from '../managers/CosyncJWTManager'; 
-import * as RealmLib from '../managers/RealmManager'; 
+import * as CosyncJWT from '../managers/CosyncJWTManager';  
 import Loader from '../components/Loader'; 
   
 

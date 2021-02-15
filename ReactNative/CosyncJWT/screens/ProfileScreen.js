@@ -34,12 +34,11 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../components/Loader'; 
 import Configure from '../config/Config';  
+import * as CosyncJWT from '../managers/CosyncJWTManager'; 
 
 const ProfileScreen = props => { 
   let [loading, setLoading] = useState(false);
-   
-  const ref_input_pwd = useRef(); 
-
+    
   global.appId = Configure.Realm.appId; 
   AsyncStorage.setItem('appId', global.appId);  
 

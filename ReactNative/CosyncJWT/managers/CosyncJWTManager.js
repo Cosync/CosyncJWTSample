@@ -22,245 +22,75 @@
 //  Created by Tola Voeung.
 //  Copyright © 2020 cosync. All rights reserved.
 //
-import Configure from '../config/Config' 
-import Request from '../components/Request'; 
-import md5 from 'md5';
+import Configure from '../config/Config'  
+import AsyncStorage from '@react-native-community/async-storage';
 
-
-
-export const register = (firstName, lastName, handle, userPassword, code) => {
-    return new Promise((resolve, reject) => { 
-
-        let metaData = {
-            name: {
-                first: firstName,
-                last: lastName
-            },
-            email: handle
-        };
-
-
-        let dataToSend = {
-            handle: handle,
-            code: code,
-            password: md5(userPassword),
-            metaData : JSON.stringify(metaData)
-        }; 
-        
-        Request(`${Configure.CosyncApp.apiURL}/api/appuser/register`, dataToSend, {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
-                'app-token': Configure.CosyncApp.appToken
-            },
-             
-        }, (progressEvent) => { 
-            
-           
-        }).then((res) => { 
-            
-            try {
-                
-                let respone = JSON.parse(res._response); 
-                if(res.status == 200 ) resolve(respone)
-                else reject(respone)
-
-            } catch (error) {
-                reject(res._response)
-            }
-            
-
-        }, (err) => reject(err) )
-        
-    })
-}
-
-export const signup = (firstName, lastName, handle, userPassword) => {
-    return new Promise((resolve, reject) => { 
-
-        let metaData = {
-            name: {
-                first: firstName,
-                last: lastName
-            },
-            email: handle
-        };
-
-
-        let dataToSend = {
-            handle: handle,
-            password: md5(userPassword),
-            metaData : JSON.stringify(metaData)
-        }; 
-        
-        Request(`${Configure.CosyncApp.apiURL}/api/appuser/signup`, dataToSend, {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
-                'app-token': Configure.CosyncApp.appToken
-            },
-             
-        }, (progressEvent) => { 
-            
-           
-        }).then((res) => { 
-            
-            try {
-                
-                let respone = JSON.parse(res._response); 
-                if(res.status == 200 ) resolve(respone)
-                else reject(respone)
-
-            } catch (error) {
-                reject(res._response)
-            }
-            
-
-        }, (err) => reject(err) )
-        
-    })
-}
-  
-  export const completeSignup = (handle , code) => {
-    return new Promise((resolve, reject) => { 
-        let dataToSend = {
-            handle: handle,
-            code: code 
-        }; 
-        
-        Request(`${Configure.CosyncApp.apiURL}/api/appuser/completeSignup`, dataToSend, {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
-                'app-token': Configure.CosyncApp.appToken
-            },
-             
-        }, (progressEvent) => { 
-            
-           
-        }).then((res) => { 
-            try {
-
-                let respone = JSON.parse(res._response); 
-                if(res.status == 200 ) resolve(respone)
-                else reject(respone)
-
-            } catch (error) {
-                reject(res._response)
-            }
-            
-
-        }, (err) => reject(err) )
-    })
-  }
-  
-    export const login = (handle, userPassword) => {
-        return new Promise((resolve, reject) => { 
-    
-            let dataToSend = {
-                handle: handle,
-                password: md5(userPassword)
-            }; 
-            
-            Request(`${Configure.CosyncApp.apiURL}/api/appuser/login`, dataToSend, {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
-                    'app-token': Configure.CosyncApp.appToken
-                },
-                
-            }, (progressEvent) => { 
-                
-            
-            }).then((res) => { 
-                try {
-                    
-                    let respone = JSON.parse(res._response); 
-                    if(res.status == 200 ) resolve(respone)
-                    else reject(respone)
-
-                } catch (error) {
-                    reject(res._response)
-                }
-                
-
-            }, (err) => reject(err) )
-        
-        })
-    }
-
-
-    export const forgotPassword = (handle) => {
-        return new Promise((resolve, reject) => { 
-    
-            let dataToSend = {
-                handle: handle 
-            }; 
-            
-            Request(`${Configure.CosyncApp.apiURL}/api/appuser/forgotPassword`, dataToSend, {
-                method: 'POST',
-                headers: {
-                    'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8',
-                    'app-token': Configure.CosyncApp.appToken
-                },
-                
-            }, (progressEvent) => { 
-                
-            
-            }).then((res) => { 
-                try {
-                    
-                    let respone = JSON.parse(res._response); 
-                    if(res.status == 200 ) resolve(respone)
-                    else reject(respone)
-
-                } catch (error) {
-                    reject(res._response)
-                }
-                
-
-            }, (err) => reject(err) )
-        
-        })
-    }
-
-    export const fetchData = (endpoint, method, data) => {
-        return new Promise((resolve, reject) => {  
-            let option = {
-                method: method || 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'app-token': Configure.CosyncApp.appToken
-                },
-            };
-
-            if(data) option.body = JSON.stringify(data);
-
-            fetch(`${Configure.CosyncApp.apiURL}${endpoint}`, option)
-            .then((response) => response.json())
-            .then((json) => resolve(json))
-            .catch((error) => reject(error)); 
-        })
-    }
-
-    export const getCosyncApplicationData = () => {
-        return new Promise((resolve, reject) => {  
-
-            let option = {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'app-token': Configure.CosyncApp.appToken
-                },
-            };  
-
-            fetch(`${Configure.CosyncApp.apiURL}/api/appuser/getApplication`, option)
-            .then((response) => response.json())
-            .then((json) => resolve(json))
-            .catch((error) => reject(error));  
  
-        })
-    }
+
     
+export const fetchData = (endpoint) => {
+    return new Promise((resolve, reject) => {  
+        let option = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            }
+        }; 
+
+        if(global.userData && global.userData['access-token']) option.headers['access-token'] = global.userData['access-token'];
+        else option.headers['app-token'] = Configure.CosyncApp.appToken;
+
+        fetch(`${Configure.CosyncApp.apiURL}${endpoint}`, option)
+        .then((response) => response.json())
+        .then((json) => resolve(json))
+        .catch((error) => reject(error)); 
+    
+        
+    })
+}
+
+
+export const postData = (endpoint, data) => {
+    return new Promise((resolve, reject) => {  
+        let option = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json' 
+            }
+        };
+
+        if(data) option.body = JSON.stringify(data);  
+
+        if(global.userData && global.userData['access-token']) option.headers['access-token'] = global.userData['access-token'];
+        else option.headers['app-token'] = Configure.CosyncApp.appToken;
+
+        fetch(`${Configure.CosyncApp.apiURL}${endpoint}`, option)
+        .then((response) => response.json())
+        .then((json) => resolve(json))
+        .catch((error) => reject(error)); 
+    
+        
+    })
+}
+
+export const getCosyncApplicationData = () => {
+    return new Promise((resolve, reject) => {  
+
+        let option = {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'app-token': Configure.CosyncApp.appToken
+            },
+        };  
+
+        fetch(`${Configure.CosyncApp.apiURL}/api/appuser/getApplication`, option)
+        .then((response) => response.json())
+        .then((json) => resolve(json))
+        .catch((error) => reject(error));  
+
+    })
+}

@@ -40,6 +40,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from '../components/Loader'; 
 import Configure, { CosyncApp } from '../config/Config';  
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
+import * as Realm from '../managers/RealmManager'; 
+import md5 from 'md5';
 
 const LoginScreen = props => {
   
@@ -69,10 +71,7 @@ const LoginScreen = props => {
   }
 
   
-  const handleSubmitPress = () => {
-
-   
-    
+  const handleSubmitPress = () => { 
     setErrortext('');
     if (!userEmail) {
       alert('Please fill Email');
@@ -92,17 +91,57 @@ const LoginScreen = props => {
     AsyncStorage.setItem('user_password', userPassword); 
 
     setLoading(true);  
-    CosyncJWT.login(userEmail, userPassword).then(result => {
+
+    let dataToSend = {
+      handle: userEmail,
+      password: md5(userPassword)
+  }; 
+
+    CosyncJWT.postData('/api/appuser/login', dataToSend).then(result => {
 
       console.log('CosyncJWT login result  ', result);
-      AsyncStorage.setItem('access-token', result['access-token']); 
-      setLoading(false); 
-      props.navigation.navigate('DrawerNavigationRoutes');
+     
+      if(result.code){
+        setLoading(false);
+        setErrortext(result.message);
+        return;
+      }
+
+      global.userData = result; 
+
+      CosyncJWT.fetchData('/api/appuser/getUser').then(data => {  
+        global.userData.data = data; 
+        
+        loginToMongoDBRealm(result.jwt); 
+      });
+
+      // setLoading(false); 
+      // props.navigation.navigate('DrawerNavigationRoutes');
+      // global.userData.realmUserId = 'test';  
+     
+
+      
     }).catch(err => {
       setLoading(false);
       setErrortext(err.message);
     }) 
   };
+
+  const loginToMongoDBRealm = (jwt) => {
+
+    Realm.login(jwt).then(user => { 
+
+      global.userData.realmUserId = user.id; 
+
+      setLoading(false); 
+      props.navigation.navigate('DrawerNavigationRoutes');
+
+    }).catch(err => {
+      setErrortext(err.message);
+    });
+
+    
+  }
 
   return (
     <View style={styles.mainBody}>
@@ -126,11 +165,11 @@ const LoginScreen = props => {
               <TextInput
                 style={styles.inputStyle}
                 onChangeText={UserEmail => setUserEmail(UserEmail)} 
-                placeholder="Enter Email" 
-                autoCapitalize="none"
+                placeholder="Enter Email"
+                autoCapitalize="none" 
+                autoCorrect={false}
                 keyboardType="email-address" 
                 returnKeyType="next" 
-                autoComplete= {'off'}
                 onSubmitEditing={() => ref_input_pwd.current.focus()}
                 blurOnSubmit={false}
                 

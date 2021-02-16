@@ -1,7 +1,7 @@
  
 //
 //  CustomSidebarMenu.js
-//  CosyncJWT
+//  CosyncStorageSample
 //
 //  Licensed to the Apache Software Foundation (ASF) under one
 //  or more contributor license agreements.  See the NOTICE file
@@ -33,8 +33,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 const CustomSidebarMenu = props => {
   let items = [
     {
-      navOptionName: 'Profile Screen',
+      navOptionName: 'Profile',
       screenToNavigate: 'ProfileScreen',
+    },
+    {
+      navOptionName: 'Password',
+      screenToNavigate: 'PasswordScreen',
     }, 
     {
       navOptionName: 'Logout',
@@ -44,7 +48,7 @@ const CustomSidebarMenu = props => {
 
   const [userName, setUserName] = useState('User');
 
-  if(global.userData) setUserName(global.userData.name);
+  if(global.userData && global.userData.name) setUserName(global.userData.name);
 
   const handleClick = (index, screenToNavigate) => {
 
@@ -78,7 +82,7 @@ const CustomSidebarMenu = props => {
       
     }
 
-    if(global.userData) setUserName(global.userData.name);
+    if(global.userData && global.userData.name) setUserName(global.userData.name);
      
   };
 

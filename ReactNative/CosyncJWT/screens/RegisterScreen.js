@@ -36,7 +36,7 @@ import {  StyleSheet,
   KeyboardAvoidingView, } from 'react-native';
 import * as CosyncJWT from '../managers/CosyncJWTManager';  
 import Loader from '../components/Loader'; 
-  
+import md5 from 'md5';
 
 const RegisterScreen = props => {
   
@@ -122,8 +122,24 @@ const RegisterScreen = props => {
 
     setLoading(true);   
     
+    let metaData = {
+      name: {
+          first: firstName,
+          last: lastName
+      },
+      email: userEmail
+  };
+
+
+  let dataToSend = {
+      handle: userEmail,
+      code: signupCode,
+      password: md5(userPassword),
+      metaData : JSON.stringify(metaData)
+  }; 
   
-    CosyncJWT.register(firstName, lastName, userEmail, userPassword, signupCode).then(result => {
+  
+    CosyncJWT.postData('/api/appuser/register', dataToSend).then(result => {
 
       setLoading(false);   
       
@@ -204,8 +220,7 @@ const RegisterScreen = props => {
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={value => setUserEmail(value)}
-                //underlineColorAndroid="#4638ab"
+                onChangeText={value => setUserEmail(value)} 
                 placeholder="Enter Email"
                 autoCapitalize="none" 
                 autoCorrect={false}

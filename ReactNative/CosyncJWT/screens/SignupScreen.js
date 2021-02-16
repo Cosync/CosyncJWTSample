@@ -35,7 +35,7 @@ import {  StyleSheet,
   TouchableOpacity,
   KeyboardAvoidingView, } from 'react-native';
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
-import * as RealmLib from '../managers/RealmManager'; 
+import md5 from 'md5';
 import Loader from '../components/Loader'; 
   
 
@@ -65,7 +65,7 @@ const SignupScreen = props => {
     });
    
   }, []);
-  
+
   const validateEmail = (text) => {
   
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -111,17 +111,23 @@ const SignupScreen = props => {
   const handleSubmitVerifyCodePress = () => {
     setLoading(true);   
 
-    CosyncJWT.completeSignup(userEmail, signupCode).then(result => {
+    let dataToSend = {
+      handle: userEmail,
+      code: signupCode 
+  }; 
+  
+    CosyncJWT.postData('/api/appuser/completeSignup', dataToSend).then(result => {
+
       setLoading(false); 
+      console.log('completeSignup ', result);
 
-      if(result){ 
-
-        console.log('completeSignup ', result);
-
-        setInfoText('Successfully Register.'); 
-        AsyncStorage.setItem('access-token', result['access-token']); 
-
+      if(result && result.jwt){
         
+        global.userData = result; 
+
+        loginToMongoDBRealm(result.jwt);
+        setInfoText('Successfully Register.'); 
+        AsyncStorage.setItem('access-token', result['access-token']);  
         props.navigation.navigate('DrawerNavigationRoutes');
       }
       else{
@@ -133,6 +139,23 @@ const SignupScreen = props => {
       setLoading(false); 
       setErrorCodetext(`Error: ${err.message}`);
     })
+  }
+
+  const loginToMongoDBRealm = (jwt) => {
+
+    Realm.login(jwt).then(user => {
+
+      console.log('CosyncJWT loginToMongoDBRealm user  ', user);
+
+      global.userData.realmUserId = user.id;
+      setLoading(false); 
+      props.navigation.navigate('DrawerNavigationRoutes');
+      
+    }).catch(err => {
+      setErrortext(err.message);
+    });
+
+    
   }
   
   const handleSubmitPress = () => {
@@ -147,7 +170,22 @@ const SignupScreen = props => {
     setLoading(true);   
     
   
-    CosyncJWT.signup(firstName, lastName, userEmail, userPassword).then(result => {
+    let metaData = {
+      name: {
+          first: firstName,
+          last: lastName
+      },
+      email: userEmail
+  };
+
+
+  let dataToSend = {
+      handle: userEmail,
+      password: md5(userPassword),
+      metaData : JSON.stringify(metaData)
+  }; 
+  
+    CosyncJWT.postData('/api/appuser/signup', dataToSend).then(result => {
 
       setLoading(false);   
 

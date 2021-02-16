@@ -32,6 +32,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 //Import External Screens
+import PasswordScreen from '../screens/PasswordScreen'; 
 import ProfileScreen from '../screens/ProfileScreen'; 
 import CustomSidebarMenu from './CustomSidebarMenu';
 import NavigationDrawerHeader from './NavigationDrawerHeader';
@@ -50,7 +51,20 @@ const FirstActivity_StackNavigator = createStackNavigator({
   },
 });
 
- 
+
+const SecondActivity_StackNavigator = createStackNavigator({
+  First: {
+    screen: PasswordScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Password Screen',
+      headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#307ecc',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+}); 
 
 
 const DrawerNavigatorRoutes = createDrawerNavigator(
@@ -60,7 +74,14 @@ const DrawerNavigatorRoutes = createDrawerNavigator(
       navigationOptions: {
         drawerLabel: 'Profile Screen',
       },
-    } 
+    },
+    PasswordScreen: {
+      screen: SecondActivity_StackNavigator,
+      navigationOptions: {
+        drawerLabel: 'Password Screen',
+      },
+    },
+    
   },
   {
     contentComponent: CustomSidebarMenu,

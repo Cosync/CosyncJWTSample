@@ -87,7 +87,8 @@ const ForgotPasswordScreen = props => {
     else {
 
       
-      CosyncJWT.forgotPassword(userEmail).then(result => {
+      CosyncJWT.postData('/api/appuser/forgotPassword', {handle: handle}).then(result => {
+
         setLoading(false);
         console.log('CosyncJWT forgotPassword result  ', result);
         
@@ -135,7 +136,7 @@ const ForgotPasswordScreen = props => {
 
     setLoading(true);   
 
-    CosyncJWT.fetchData('/api/appuser/resetPassword', 'POST', {handle:userEmail, password:md5(userPassword), code:resetCode}).then(result => {
+    CosyncJWT.postData('/api/appuser/resetPassword', {handle:userEmail, password:md5(userPassword), code:resetCode}).then(result => {
       setLoading(false); 
       console.log('resetPassword ', result);
 

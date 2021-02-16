@@ -29,6 +29,8 @@ import {
   StyleSheet, 
   View,
   Text,
+  TextInput,
+  TouchableOpacity
  
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -38,7 +40,10 @@ import * as CosyncJWT from '../managers/CosyncJWTManager';
 
 const ProfileScreen = props => { 
   let [loading, setLoading] = useState(false);
-    
+  let [userEmail, setUserEmail] = useState('');
+  let [errortext, setErrortext] = useState('');
+  let [infotext, setInfotext] = useState('');
+
   global.appId = Configure.Realm.appId; 
   AsyncStorage.setItem('appId', global.appId);  
 
@@ -50,11 +55,79 @@ const ProfileScreen = props => {
   }, []);
 
 
+
+  const handleInvite = () => { 
+
+    setLoading(true);   
+    setErrortext('');
+    setInfotext('');
+
+    if(!global.appData.invitationEnabled){
+      setErrortext(`This app doesn't allow invitation.`); 
+      return;
+    }
+
+    if(global.appData.metaDataInvite.length){
+      setErrortext(`metaDataInvite`); 
+    }
+
+    CosyncJWT.postData('/api/appuser/invite', {handle:userEmail, senderUserId:global.userData.realmUserId}).then(result => {
+
+      setLoading(false);   
+
+      if(result == true){
+        setInfotext('Success')
+      } 
+      else{ 
+        setErrortext(`Error: ${result.message}`);
+      }
+    }).catch(err => {
+      setLoading(false); 
+      console.log(err);
+      setErrortext(`Error: ${err.message}`);
+    })
+    
+  };
+
+
+
   return (
     <View style={styles.mainBody}>
-      <Loader loading={loading} />
-      
-       <Text>Profile Page</Text>
+      <Loader loading={loading} /> 
+      <Text> Invite Someone </Text>
+      <View style={styles.SectionStyle}>
+     
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={value => setUserEmail(value)} 
+              placeholder="Enter Email to invite"
+              autoCapitalize="none" 
+              autoCorrect={false}
+              keyboardType="email-address" 
+              returnKeyType="next" 
+              onSubmitEditing={() => handleInvite}
+              blurOnSubmit={false}
+              
+            />
+      </View>
+
+      {infotext != '' ? (
+              <Text style={styles.registerTextStyle}> {infotext} </Text>
+      ) : null} 
+
+
+      {errortext != '' ? (
+            <Text style={styles.errorTextStyle}> {errortext} </Text>
+      ) : null}
+
+      <TouchableOpacity
+            style={styles.buttonStyle}
+            activeOpacity={0.5}
+            onPress={handleInvite}>
+            <Text style={styles.buttonTextStyle}>Invite</Text>
+      </TouchableOpacity>
+
+
     </View>
   );
 };

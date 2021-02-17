@@ -32,8 +32,7 @@ import {
   TextInput,
   TouchableOpacity
  
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+} from 'react-native'; 
 import Loader from '../components/Loader'; 
 import Configure from '../config/Config';  
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
@@ -41,11 +40,11 @@ import * as CosyncJWT from '../managers/CosyncJWTManager';
 const ProfileScreen = props => { 
   let [loading, setLoading] = useState(false);
   let [userEmail, setUserEmail] = useState('');
-  let [errortext, setErrortext] = useState('');
-  let [infotext, setInfotext] = useState('');
+  let [userPhone, setUserPhone] = useState(''); 
+  let [userPhoneCode, setUserPhoneCode] = useState(''); 
+  let [isVerifyPhone, setVerifyPhone] = useState(false);
 
-  global.appId = Configure.Realm.appId; 
-  AsyncStorage.setItem('appId', global.appId);  
+  global.appId = Configure.Realm.appId;  
 
  
   useEffect(() => {
@@ -55,77 +54,172 @@ const ProfileScreen = props => {
   }, []);
 
 
+  const validateEmail = (text) => {
+  
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(text) === false) return false;
+    else return true;
+  }
+
 
   const handleInvite = () => { 
-
-    setLoading(true);   
-    setErrortext('');
-    setInfotext('');
+ 
 
     if(!global.appData.invitationEnabled){
       setErrortext(`This app doesn't allow invitation.`); 
       return;
     }
 
-    if(global.appData.metaDataInvite.length){
-      setErrortext(`metaDataInvite`); 
+    if(!userEmail || !validateEmail(userEmail)){
+      alert(`Please enter valid email.`); 
+      return;
     }
 
-    CosyncJWT.postData('/api/appuser/invite', {handle:userEmail, senderUserId:global.userData.realmUserId}).then(result => {
-
-      setLoading(false);   
+    
+    CosyncJWT.postData('/api/appuser/invite', {handle:userEmail, senderUserId:global.userData.realmUser.id}).then(result => { 
 
       if(result == true){
-        setInfotext('Success')
+        alert('Success');
       } 
       else{ 
-        setErrortext(`Error: ${result.message}`);
+        alert(`Error: ${result.message}`);
       }
     }).catch(err => {
-      setLoading(false); 
-      console.log(err);
-      setErrortext(`Error: ${err.message}`);
+       
+       
+      alert(`Error: ${err.message}`);
     })
     
   };
 
 
+  const handleAddPhone = () => {  
+
+    if(isVerifyPhone){  
+      if(!userPhoneCode){
+        alert(`Please enter code number.`); 
+        return;
+      }
+
+
+      CosyncJWT.postData('/api/appuser/verifyPhone', {code:userPhoneCode}).then(result => { 
+
+        if(result == true){
+          setVerifyPhone(false);
+
+          alert('Success')
+        } 
+        else{ 
+          alert(`Error: ${result.message}`);
+        }
+      }).catch(err => {
+        setLoading(false); 
+        
+        alert(`Error: ${err.message}`);
+      })
+      
+
+      return;
+    }
+
+
+    if(!userPhone){
+      alert(`Please enter phone number.`); 
+      return;
+    }
+    
+ 
+    
+    CosyncJWT.postData('/api/appuser/setPhone', {phone:userPhone}).then(result => { 
+
+      if(result == true){
+        alert('Success')
+      } 
+      else{ 
+        alert(`Error: ${result.message}`);
+      }
+    }).catch(err => {
+      setLoading(false); 
+      
+      alert(`Error: ${err.message}`);
+    })
+    
+  }; 
 
   return (
     <View style={styles.mainBody}>
-      <Loader loading={loading} /> 
-      <Text> Invite Someone </Text>
-      <View style={styles.SectionStyle}>
-     
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={value => setUserEmail(value)} 
-              placeholder="Enter Email to invite"
-              autoCapitalize="none" 
-              autoCorrect={false}
-              keyboardType="email-address" 
-              returnKeyType="next" 
-              onSubmitEditing={() => handleInvite}
-              blurOnSubmit={false}
-              
-            />
+      <Loader loading={loading} />  
+
+      <View style={styles.viewSection}>
+        <Text style={styles.registerTextStyle}> Invite Someone </Text>
+        <View style={styles.SectionStyle}>
+      
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={value => setUserEmail(value)} 
+                placeholder="Enter Email to invite"
+                autoCapitalize="none" 
+                autoCorrect={false}
+                keyboardType="email-address" 
+                returnKeyType="next" 
+                onSubmitEditing={() => handleInvite}
+                blurOnSubmit={false}
+                
+              />
+        </View>
+
+       
+
+        <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={handleInvite}>
+              <Text style={styles.buttonTextStyle}>Invite</Text>
+        </TouchableOpacity>
       </View>
 
-      {infotext != '' ? (
-              <Text style={styles.registerTextStyle}> {infotext} </Text>
-      ) : null} 
 
+      <View style={styles.viewSection}>
+        <Text style={styles.registerTextStyle}> Add Phone </Text>
+        <View style={styles.SectionStyle}>
+      
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={value => setUserPhone(value)} 
+                placeholder="Enter your phone number"
+                autoCapitalize="none" 
+                autoCorrect={false} 
+                returnKeyType="next" 
+                onSubmitEditing={() => handleAddPhone}
+                blurOnSubmit={false}
+                
+              />
+        </View> 
 
-      {errortext != '' ? (
-            <Text style={styles.errorTextStyle}> {errortext} </Text>
-      ) : null}
+        {isVerifyPhone ?
+         <View style={styles.SectionStyle}>
+      
+          <TextInput
+            style={styles.inputStyle}
+            onChangeText={value => setUserPhoneCode(value)} 
+            placeholder="Enter verify code"
+            autoCapitalize="none" 
+            autoCorrect={false} 
+            returnKeyType="next" 
+            onSubmitEditing={() => handleAddPhone}
+            blurOnSubmit={false}
+            
+          />
+          </View>  : null}
+       
+          <TouchableOpacity
+              style={styles.buttonStyle}
+              activeOpacity={0.5}
+              onPress={handleAddPhone}>
+              <Text style={styles.buttonTextStyle}>Submit</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-            style={styles.buttonStyle}
-            activeOpacity={0.5}
-            onPress={handleInvite}>
-            <Text style={styles.buttonTextStyle}>Invite</Text>
-      </TouchableOpacity>
+      </View>
 
 
     </View>
@@ -138,6 +232,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#fff',
+  },
+  viewSection: { 
+  
+    marginTop: 20,
+    
+    marginBottom: 20,
   },
   SectionStyle: {
     flexDirection: 'row',

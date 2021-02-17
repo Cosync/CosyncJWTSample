@@ -9,8 +9,7 @@
     "test": "jest",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "@react-native-community/async-storage": "^1.12.1",
+  "dependencies": { 
     "@react-native-community/masked-view": "^0.1.10",
     "bson": "^4.2.0",
     "md5": "^2.3.0",

@@ -27,8 +27,7 @@
 import React, { useState } from 'react';
 
 //Import all required component
-import { View, StyleSheet, Text, Alert } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { View, StyleSheet, Text, Alert } from 'react-native'; 
 
 const CustomSidebarMenu = props => {
   let items = [
@@ -66,8 +65,8 @@ const CustomSidebarMenu = props => {
           },
           {
             text: 'Confirm',
-            onPress: () => {
-              AsyncStorage.clear();
+            onPress: () => { 
+              global.userData = {};
               props.navigation.navigate('Auth');
                
             },

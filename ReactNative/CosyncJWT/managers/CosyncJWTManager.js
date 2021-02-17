@@ -22,12 +22,8 @@
 //  Created by Tola Voeung.
 //  Copyright © 2020 cosync. All rights reserved.
 //
-import Configure from '../config/Config'  
-import AsyncStorage from '@react-native-community/async-storage';
+import Configure from '../config/Config';
 
- 
-
-    
 export const fetchData = (endpoint) => {
     return new Promise((resolve, reject) => {  
         let option = {
@@ -65,6 +61,8 @@ export const postData = (endpoint, data) => {
 
         if(global.userData && global.userData['access-token']) option.headers['access-token'] = global.userData['access-token'];
         else option.headers['app-token'] = Configure.CosyncApp.appToken;
+
+        console.log('CosyncJWT postData ', global.userData);
 
         fetch(`${Configure.CosyncApp.apiURL}${endpoint}`, option)
         .then((response) => response.json())

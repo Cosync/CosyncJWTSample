@@ -23,8 +23,7 @@
 //  Copyright © 2020 cosync. All rights reserved.
 //
 
-import React, { useState, useRef, useEffect } from 'react';
-import AsyncStorage from '@react-native-community/async-storage'; 
+import React, { useState, useRef, useEffect } from 'react'; 
 import {  StyleSheet,
   TextInput,
   View,
@@ -34,7 +33,8 @@ import {  StyleSheet,
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView, } from 'react-native';
-import * as CosyncJWT from '../managers/CosyncJWTManager';  
+import * as CosyncJWT from '../managers/CosyncJWTManager';   
+import * as Realm from '../managers/RealmManager'; 
 import Loader from '../components/Loader'; 
 import md5 from 'md5';
 
@@ -146,10 +146,8 @@ const RegisterScreen = props => {
       console.log('result ', result);
 
       if(result.jwt){ 
-        AsyncStorage.setItem('access-token', result['access-token']); 
-        
-        props.navigation.navigate('DrawerNavigationRoutes');
-       
+        global.userData = result;   
+        loginToMongoDBRealm(result.jwt); 
       }
       else{
         
@@ -165,6 +163,22 @@ const RegisterScreen = props => {
 
  
    
+  const loginToMongoDBRealm = (jwt) => {
+
+    Realm.login(jwt).then(user => { 
+
+      global.userData.realmUser = user; 
+
+      setLoading(false); 
+      props.navigation.navigate('DrawerNavigationRoutes');
+
+    }).catch(err => {
+      setErrortext(err.message);
+    });
+
+    
+  }
+
 
  
 

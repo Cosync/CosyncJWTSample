@@ -35,8 +35,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+} from 'react-native'; 
 import Loader from '../components/Loader'; 
 import Configure, { CosyncApp } from '../config/Config';  
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
@@ -52,8 +51,8 @@ const LoginScreen = props => {
   const ref_input_pwd = useRef();
   
 
-  global.appId = Configure.Realm.appId; 
-  AsyncStorage.setItem('appId', global.appId);  
+  global.appId = Configure.Realm.appId;  
+   
 
   useEffect(() => {
     CosyncJWT.fetchData('/api/appuser/getApplication').then(result => {  
@@ -85,10 +84,7 @@ const LoginScreen = props => {
     if (!userPassword) {
       alert('Please fill Password');
       return;
-    }
-    
-    AsyncStorage.setItem('user_email', userEmail);  
-    AsyncStorage.setItem('user_password', userPassword); 
+    } 
 
     setLoading(true);  
 
@@ -109,15 +105,22 @@ const LoginScreen = props => {
 
       global.userData = result; 
 
+      console.log('CosyncJWT login global.userData 1 ', global.userData);
+
       CosyncJWT.fetchData('/api/appuser/getUser').then(data => {  
         global.userData.data = data; 
-        
-        loginToMongoDBRealm(result.jwt); 
+       
+
+        global.userData.realmUser = {id: 'test'};  
+
+        console.log('CosyncJWT login global.userData 2 ', global.userData); 
+        setLoading(false); 
+        props.navigation.navigate('DrawerNavigationRoutes'); 
+
+        //loginToMongoDBRealm(result.jwt); 
       });
 
-      // setLoading(false); 
-      // props.navigation.navigate('DrawerNavigationRoutes');
-      // global.userData.realmUserId = 'test';  
+     
      
 
       
@@ -131,7 +134,7 @@ const LoginScreen = props => {
 
     Realm.login(jwt).then(user => { 
 
-      global.userData.realmUserId = user.id; 
+      global.userData.realmUser = user; 
 
       setLoading(false); 
       props.navigation.navigate('DrawerNavigationRoutes');

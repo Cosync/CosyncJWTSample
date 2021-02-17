@@ -30,15 +30,12 @@ import {
   TextInput,
   View,
   Text,
-  ScrollView,
-  Image,
-  Keyboard,
+  ScrollView, 
   TouchableOpacity,
   KeyboardAvoidingView,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+} from 'react-native'; 
 import Loader from '../components/Loader'; 
-import Configure, { CosyncApp } from '../config/Config'; 
+import Configure from '../config/Config'; 
 import md5 from 'md5';
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
 

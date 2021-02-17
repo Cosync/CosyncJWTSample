@@ -35,8 +35,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
-} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+} from 'react-native'; 
 import Loader from '../components/Loader'; 
 import Configure, { CosyncApp } from '../config/Config'; 
 import md5 from 'md5';
@@ -55,10 +54,7 @@ const ForgotPasswordScreen = props => {
   const ref_input_pwd = useRef();
   const ref_input_code = useRef();
 
-  global.appId = Configure.Realm.appId; 
-  AsyncStorage.setItem('appId', global.appId);  
-   
-
+  global.appId = Configure.Realm.appId;  
   const validateEmail = (text) => {
    
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

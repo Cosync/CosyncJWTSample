@@ -60,9 +60,7 @@ export const postData = (endpoint, data) => {
         if(data) option.body = JSON.stringify(data);  
 
         if(global.userData && global.userData['access-token']) option.headers['access-token'] = global.userData['access-token'];
-        else option.headers['app-token'] = Configure.CosyncApp.appToken;
-
-        console.log('CosyncJWT postData ', global.userData);
+        else option.headers['app-token'] = Configure.CosyncApp.appToken; 
 
         fetch(`${Configure.CosyncApp.apiURL}${endpoint}`, option)
         .then((response) => response.json())

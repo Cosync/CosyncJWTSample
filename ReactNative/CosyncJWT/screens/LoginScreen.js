@@ -47,9 +47,12 @@ const LoginScreen = props => {
   let [userEmail, setUserEmail] = useState('');
   let [userPassword, setUserPassword] = useState('');
   let [loading, setLoading] = useState(false);
+  let [isCompleteLogin, setCompleteLogin] = useState(false);
+  let [loginCode, setLoginCode] = useState('');
+  let [twoFactorText, setTwoFactorText] = useState('Enter SMS verification code');
+
   let [errortext, setErrortext] = useState('');
-  const ref_input_pwd = useRef();
-  
+  const ref_input_pwd = useRef(); 
 
   global.appId = Configure.Realm.appId;  
    
@@ -57,6 +60,7 @@ const LoginScreen = props => {
   useEffect(() => {
     CosyncJWT.fetchData('/api/appuser/getApplication').then(result => {  
       global.appData = result;
+      if(result.twoFactorVerification == 'google') setTwoFactorText('Enter Auth token verification code');
     });
    
   }, []);
@@ -85,44 +89,54 @@ const LoginScreen = props => {
       alert('Please fill Password');
       return;
     } 
-
+ 
     setLoading(true);  
+
+    if(isCompleteLogin){
+
+      if (!loginCode) {
+        alert('Please fill login code');
+        return;
+      } 
+
+      completeLogin();
+      return;
+    }
 
     let dataToSend = {
       handle: userEmail,
       password: md5(userPassword)
-  }; 
+    }; 
 
     CosyncJWT.postData('/api/appuser/login', dataToSend).then(result => {
 
       console.log('CosyncJWT login result  ', result);
-     
-      if(result.code){
-        setLoading(false);
+      setLoading(false);
+      global.userData = result;  
+      if(result.code){ 
+        
         setErrortext(result.message);
         return;
       }
-
-      global.userData = result; 
-
-      console.log('CosyncJWT login global.userData 1 ', global.userData);
+      else if(result['login-token']){  
+        
+        setCompleteLogin(true); 
+        return;
+      } 
 
       CosyncJWT.fetchData('/api/appuser/getUser').then(data => {  
         global.userData.data = data; 
        
 
-        global.userData.realmUser = {id: 'test'};  
+        // global.userData.realmUser = {id: 'test'};
+        // console.log('CosyncJWT login global.userData 2 ', global.userData); 
+        // setLoading(false); 
+        // props.navigation.navigate('DrawerNavigationRoutes'); 
 
-        console.log('CosyncJWT login global.userData 2 ', global.userData); 
-        setLoading(false); 
-        props.navigation.navigate('DrawerNavigationRoutes'); 
+        
 
-        //loginToMongoDBRealm(result.jwt); 
-      });
-
-     
-     
-
+        loginToMongoDBRealm(global.userData.jwt); 
+      }); 
       
     }).catch(err => {
       setLoading(false);
@@ -130,13 +144,54 @@ const LoginScreen = props => {
     }) 
   };
 
+
+
+  const completeLogin = () => {
+
+    setLoading(true); 
+
+    let dataToSend = {
+      loginToken: global.userData['login-token'],
+      code: loginCode
+    }; 
+
+    CosyncJWT.postData('/api/appuser/loginComplete', dataToSend).then(result => {
+      console.log('completeLogin', result);
+
+      if(result.code){
+        setLoading(false);
+        setErrortext(result.message);
+        return;
+      }
+      else if(result.jwt){
+        setCompleteLogin(true);
+        global.userData = result;  
+
+        CosyncJWT.fetchData('/api/appuser/getUser').then(data => {
+          global.userData.data = data; 
+          loginToMongoDBRealm(global.userData.jwt); 
+        });
+      }
+      else{
+        setErrortext('Invalid Data');
+      }
+
+      
+    }).catch(err => {
+      setErrortext('Invalid Data');
+      setLoading(false);
+      console.log('completeLogin err', err);
+    })
+  }
+
   const loginToMongoDBRealm = (jwt) => {
 
+    setLoading(true);
+    
     Realm.login(jwt).then(user => { 
-
-      global.userData.realmUser = user; 
-
-      setLoading(false); 
+      console.log('loginToMongoDBRealm realm user id - ', user.id);
+      global.userData.realmUser = user;  
+       
       props.navigation.navigate('DrawerNavigationRoutes');
 
     }).catch(err => {
@@ -193,6 +248,23 @@ const LoginScreen = props => {
                 ref={ref_input_pwd}
               />
             </View>
+
+            {
+              isCompleteLogin ? <View style={styles.SectionStyle}>
+              <TextInput
+                style={styles.inputStyle}
+                onChangeText={value => setLoginCode(value)} 
+                placeholder={twoFactorText}
+                keyboardType="numeric" 
+                returnKeyType="go"
+                onSubmitEditing={() => Keyboard.dismiss, handleSubmitPress}
+                blurOnSubmit={false}
+                textContentType={'none'}
+                autoComplete= {'off'}  
+              />
+            </View> : null
+            }
+
             {errortext != '' ? (
               <Text style={styles.errorTextStyle}> {errortext} </Text>
             ) : null}

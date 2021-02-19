@@ -145,7 +145,7 @@ const SignupScreen = props => {
     Realm.login(jwt).then(user => { 
 
       global.realmUser= user;
-      setLoading(false); 
+       
       props.navigation.navigate('DrawerNavigationRoutes');
       
     }).catch(err => {

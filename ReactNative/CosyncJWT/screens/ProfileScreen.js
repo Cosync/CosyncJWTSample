@@ -27,12 +27,15 @@
 import React, { useEffect, useState, useRef } from 'react'; 
 import {
   StyleSheet, 
+  Switch,
   View,
   Text,
   TextInput,
   TouchableOpacity
  
 } from 'react-native'; 
+ 
+import Clipboard from '@react-native-clipboard/clipboard';
 import Loader from '../components/Loader'; 
 import Configure from '../config/Config';  
 import * as CosyncJWT from '../managers/CosyncJWTManager'; 
@@ -43,13 +46,18 @@ const ProfileScreen = props => {
   let [userPhone, setUserPhone] = useState(''); 
   let [userPhoneCode, setUserPhoneCode] = useState(''); 
   let [isVerifyPhone, setVerifyPhone] = useState(false);
+  let [isGoogleTwoFactor, setGoogleTwoFactor] = useState(false); 
+  let [googleSecretKey, setGoogleSecretKey] = useState(''); 
 
-  global.appId = Configure.Realm.appId;  
-
+  global.appId = Configure.Realm.appId;   
  
   useEffect(() => {
     CosyncJWT.getCosyncApplicationData().then(result => { 
       global.appData = result;
+
+      console.log("global.userData.data ", global.userData.data);
+      let twoFactor = global.userData.data ? global.userData.data.twoFactorGoogleVerification : false;
+      setGoogleTwoFactor(twoFactor);
     });
   }, []);
 
@@ -146,6 +154,52 @@ const ProfileScreen = props => {
     
   }; 
 
+
+  const copyGoogleSecret = ()=> Clipboard.setString(googleSecretKey)
+
+
+  const handleAddGoogleTwoFactor = () => {  
+ 
+    setGoogleTwoFactor(previousState => !previousState);
+    //setGoogleTwoFactor(!isGoogleTwoFactor);
+
+    console.log('handleAddGoogleTwoFactor isGoogleTwoFactor ', isGoogleTwoFactor);
+
+    let isTwoFactor = !isGoogleTwoFactor;
+    setGoogleSecretKey(''); 
+
+    CosyncJWT.postData('/api/appuser/setTwoFactorGoogleVerification', {twoFactor: isTwoFactor}).then(result => {  
+      
+
+
+      if(result == true || result.googleSecretKey){
+
+        global.userData.data.twoFactorGoogleVerification = isTwoFactor;
+
+        if(isTwoFactor){
+          console.log('handleAddGoogleTwoFactor googleSecretKey ', result.googleSecretKey);
+          
+          if(result.googleSecretKey){
+            alert('Please check your email for Google Two Factor');
+            setGoogleSecretKey(result.googleSecretKey); 
+          } 
+          else alert('Turn off Google Two Factor');
+         
+        } 
+      } 
+      else{ 
+        setGoogleTwoFactor(previousState => !previousState);
+        alert(`Error: ${result.message}`);
+      }
+    }).catch(err => {
+      setLoading(false); 
+      setGoogleTwoFactor(previousState => !previousState);
+      alert(`Error: ${err.message}`);
+    })
+    
+  }; 
+
+
   return (
     <View style={styles.mainBody}>
       <Loader loading={loading} />  
@@ -222,6 +276,25 @@ const ProfileScreen = props => {
       </View>
 
 
+      <View style={styles.viewSection}>
+        <Text style={styles.registerTextStyle}> Add Google Two Factor </Text>  
+
+        <Switch
+           
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={isGoogleTwoFactor ? "#4638ab" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={handleAddGoogleTwoFactor}
+          value={isGoogleTwoFactor}
+        /> 
+
+        {googleSecretKey != "" ?  <TouchableOpacity onPress={copyGoogleSecret}>
+          <Text>Click here to copy Google Secret Key</Text>
+        </TouchableOpacity> : null}
+
+      </View>
+
+
     </View>
   );
 };
@@ -233,11 +306,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
-  viewSection: { 
   
-    marginTop: 20,
-    
+  viewSection: {  
+    marginTop: 20, 
     marginBottom: 20,
+    alignItems: "center",
   },
   SectionStyle: {
     flexDirection: 'row',
@@ -253,6 +326,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     borderColor: '#7DE24E',
     height: 40,
+    width: 120,
     alignItems: 'center',
     borderRadius: 30,
     marginLeft: 35,
